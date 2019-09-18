@@ -1,0 +1,66 @@
+<div class="my-data">
+    <h2>My data</h2>
+    <div class="row">
+        <div class="form">
+            <div *ngIf="myInstruments" class="instruments">
+                <p class="badge badge-success" *ngFor="let instrument of myInstruments" [attr.title]="instrument.description" 
+                    (click)="removeInstrument(instrument.id)">{{ instrument.name | uppercase }}</p>
+            </div>
+            <div class="form-group">
+                <label for="instruments">Instruments</label>
+                <input type="instruments" class="form-control" [(ngModel)]="filterInstrument"
+                [ngClass]="{ 'is-invalid': submitted && myData.instruments.errors }" />
+            </div>
+            <div class="instruments d-flex justify-content-center">
+                <p class="badge badge-dark" *ngFor="let instrument of instruments | filter:filterInstrument | slice:0:5;" [attr.title]="instrument.description" 
+                    (click)="addInstrument(instrument.id)">{{ instrument.name | uppercase }}</p>
+            </div>
+            <form [formGroup]="myDataForm" (ngSubmit)="submitForm()">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="name" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && myData.name.errors }" />
+                    <div *ngIf="submitted && myData.name.errors" class="invalid-feedback">
+                    <div *ngIf="myData.name.errors.required">Name is required</div>
+                        <div *ngIf="myData.name.errors.name">Invalid name</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="nickname">Nickname</label>
+                    <input type="nickname" formControlName="nickname" class="form-control" [ngClass]="{ 'is-invalid': submitted && myData.nickname.errors }" />
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && myData.email.errors }" />
+                    <div *ngIf="submitted && myData.email.errors" class="invalid-feedback">
+                    <div *ngIf="myData.email.errors.required">Email is required</div>
+                        <div *ngIf="myData.email.errors.email">Invalid email address</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="phone" formControlName="phone" class="form-control" [ngClass]="{ 'is-invalid': submitted && myData.phone.errors }" />
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea type="description" formControlName="description" class="form-control" maxlength="255" [ngClass]="{ 'is-invalid': submitted && myData.description.errors }"></textarea>
+                    <div *ngIf="submitted && myData.description.errors" class="invalid-feedback">
+                    <div *ngIf="myData.description.errors.required">Description is required</div>
+                        <div *ngIf="myData.description.errors.description">Invalid description</div>
+                    </div>
+                </div>
+                <div class="form-group button-container">
+                    <button class="btn btn-success">Submit</button>
+                </div>
+            </form>
+        </div>
+        <div class="upload-img">
+            <div class="picture">
+                <img src="{{ currentUser.profilePicture === null ? '/assets/user-placeholder.png' : currentUser.profilePicture }}">
+            </div>
+            <div class="button-container">
+                <button class="btn btn-success" (click)="upload.click()">Change picture</button>
+                <input hidden type="file" #upload (change)="uploadFile($event)" accept="application/jpg">
+            </div>
+        </div>
+    </div>
+</div>

@@ -3,16 +3,72 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { MainComponent } from './main.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthGuard } from './core/guard/auth.guard';
+import { AlertService } from './core/services/alert.service';
+import { UserService } from './core/services/user.service';
+import { JwtInterceptor } from './core/interceptor/jwt.interceptor';
+import { ErrorInterceptor } from './core/interceptor/error.interceptor';
+import { CoreModule } from './core/core.module';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { HomeModule } from './home/home.module';
+import { MenuComponent } from './menu/menu.component';
+import { MyDataComponent } from './my-data/my-data.component';
+import { MyBandComponent } from './my-band/my-band.component';
+import { AboutComponent } from './about/about.component';
+import { SongComponent } from './song/song.component';
+import { FileSelectDirective } from '../../node_modules/ng2-file-upload/ng2-file-upload';
+import { SongsComponent } from './song/songs/songs.component';
+import { SheetsComponent } from './song/sheets/sheets.component';
+import { SearchComponent } from './song/search/search.component';
+import { MembersComponent } from './my-band/members/members.component';
+import { CalendarModule } from 'angular-calendar';
+import { EventsModule } from './my-band/events/events.module';
+import { BandComponent } from './my-band/band/band.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        MainComponent,
+        DashboardComponent,
+        MenuComponent,
+        MyDataComponent,
+        MyBandComponent,
+        AboutComponent,
+        SongComponent,
+        FileSelectDirective,
+        SongsComponent,
+        SheetsComponent,
+        SearchComponent,
+        MembersComponent,
+        BandComponent
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NgbModule,
+        HttpClientModule,
+        HomeModule,
+        CoreModule,
+        EventsModule,
+        CalendarModule
+    ],
+    providers: [
+        AuthGuard,
+        AlertService,
+        UserService,
+        DatePipe,
+        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    ],
+    bootstrap: [AppComponent],
+    exports: []
 })
 export class AppModule { }

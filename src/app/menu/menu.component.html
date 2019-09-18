@@ -1,0 +1,167 @@
+<div class="navbar">
+    <ul class="buttons">
+        <li><a routerLink='/dashboard'>Dashboard</a></li>
+        <li><a routerLink='/my-data'>My data</a></li>
+        <li><a routerLink='/my-band/band'>My band</a></li>
+        <li><a routerLink='/song/songs'>Songs</a></li>
+        <li><a routerLink='/about'>About</a></li>
+        <li class="right">
+            <p [routerLink]="['/login']">
+                <span class="right">&crarr;Logout</span>
+            </p>
+        </li>
+        <li class="right" data-toggle="tooltip" data-placement="bottom" [attr.title]="currentUser | userdetails">
+            <a routerLink='/my-data'><img class="profile" src="{{ currentUser.profilePicture === null ? '/assets/user-placeholder.png' : currentUser.profilePicture }}">{{ currentUser.name }}</a>
+        </li>
+        <li class="right"><span (click)="showSong(song)">&oplus;  Song</span></li>
+        <li class="right"><span (click)="showAdvertisement(advertisement)">&oplus;  Post</span></li>
+        <li class="right"><span (click)="showSheet(sheet)">&oplus;  Sheet</span></li>
+    </ul>
+</div>
+
+<ng-template #advertisement let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Write something</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" formControlName="title" class="form-control" [ngClass]="{ 'is-invalid': submitted && postData.title.errors }" />
+                <div *ngIf="submitted && postData.title.errors" class="invalid-feedback">
+                <div *ngIf="postData.title.errors.required">Title is required</div>
+                    <div *ngIf="postData.title.errors">Invalid title</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select class="form-control" formControlName="category" id="category">
+                    <option value="Advertisement">Advertisement</option>
+                    <option value="Event">Event</option>
+                    <option value="Curiosity">Curiosity</option>
+                  </select>
+                <div *ngIf="submitted && postData.category.errors" class="invalid-feedback">
+                <div *ngIf="postData.category.errors.required">Category is required</div>
+                    <div *ngIf="postData.category.errors">Invalid category</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea type="text" formControlName="description" class="form-control" [ngClass]="{ 'is-invalid': submitted && postData.description.errors }"></textarea>
+                <div *ngIf="submitted && postData.description.errors" class="invalid-feedback">
+                <div *ngIf="postData.description.errors.required">Description is required</div>
+                    <div *ngIf="postData.description.errors">Invalid description</div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" ngbAutofocus (click)="submitAdvertisement()">Submit</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Cancel</button>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #song let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Add new song</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form [formGroup]="songForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" formControlName="title" class="form-control" [ngClass]="{ 'is-invalid': submitted && songData.title.errors }" />
+                <div *ngIf="submitted && songData.title.errors" class="invalid-feedback">
+                <div *ngIf="songData.title.errors.required">Title is required</div>
+                    <div *ngIf="songData.title.errors">Invalid title</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="album">Album</label>
+                <input type="text" formControlName="album" class="form-control" [ngClass]="{ 'is-invalid': submitted && songData.album.errors }" />
+            </div>
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select class="form-control" formControlName="category" id="category">
+                    <option value="Own">Own</option>
+                    <option value="Cover">Cover</option>
+                    <option value="Parody">Parody</option>
+                </select>
+                <div *ngIf="submitted && songData.category.errors" class="invalid-feedback">
+                <div *ngIf="songData.category.errors.required">Category is required</div>
+                    <div *ngIf="songData.category.errors">Invalid category</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="publishingDate">Publishing date</label>
+                <input type="date" formControlName="publishingDate" class="form-control" [ngClass]="{ 'is-invalid': submitted && songData.publishingDate.errors }" />
+                <div *ngIf="submitted && songData.publishingDate.errors" class="invalid-feedback">
+                <div *ngIf="songData.publishingDate.errors.required">Date is required!</div>
+                    <div *ngIf="songData.publishingDate.errors.publishingDate">Invalid date!</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="youtube">Youtube link</label>
+                <input type="text" formControlName="youtube" class="form-control" [ngClass]="{ 'is-invalid': submitted && postData.youtube.errors }" />
+                <div *ngIf="submitted && postData.youtube.errors" class="invalid-feedback">
+                <div *ngIf="postData.youtube.errors.required">Youtube link is required</div>
+                    <div *ngIf="postData.youtube.errors">Invalid youtube link</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea type="text" formControlName="description" class="form-control" [ngClass]="{ 'is-invalid': submitted && songData.description.errors }"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" ngbAutofocus (click)="submitSong()">Submit</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Cancel</button>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #sheet let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Upload new sheet</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <form [formGroup]="sheetForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" formControlName="title" class="form-control" [ngClass]="{ 'is-invalid': submitted && sheetData.title.errors }" />
+                <div *ngIf="submitted && sheetData.title.errors" class="invalid-feedback">
+                <div *ngIf="sheetData.title.errors.required">Title is required</div>
+                    <div *ngIf="sheetData.title.errors">Invalid title</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <textarea type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && sheetData.name.errors }"></textarea>
+                <div *ngIf="submitted && sheetData.name.errors" class="invalid-feedback">
+                <div *ngIf="sheetData.name.errors.required">Name is required</div>
+                    <div *ngIf="sheetData.name.errors">Invalid name</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="instrument">Instrument</label>
+                <input type="text" formControlName="instrument" class="form-control" [ngClass]="{ 'is-invalid': submitted && sheetData.instrument.errors }" />
+                <div *ngIf="submitted && sheetData.instrument.errors" class="invalid-feedback">
+                <div *ngIf="sheetData.instrument.errors.required">Instrument is required</div>
+                    <div *ngIf="sheetData.instrument.errors">Invalid instrument</div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" ngbAutofocus (click)="submitSheet()">Submit</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Cancel</button>
+        </div>
+    </form>
+</ng-template>

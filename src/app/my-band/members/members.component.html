@@ -1,0 +1,45 @@
+<div class="members">
+    <div class="arrows">
+        <i (click)="left()" class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>
+        <div class="card-container card-columns">
+            <div *ngFor="let member of members">
+                <div class="card" (click)="showUser(member)">
+                    <img class="card-img-top img-fluid" src="{{ member.profilePicture }}" alt="Card image cap">
+                    <blockquote class="card-block card-blockquote p-3">
+                        <h4>{{ member.name }}</h4>
+                        <p>{{ member.role }}</p>
+                        <footer>
+                            <small class="text-muted">{{ member.description }}</small>
+                        </footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+        <i (click)="right()" class="fa fa-arrow-circle-o-right right" aria-hidden="true"></i>
+    </div>
+</div>
+
+<ng-template #user let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{ selectedUser.name }}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body text-center">
+        <img class="profile" src="{{ selectedUser.profilePicture === null ? '/assets/user-placeholder.png' : selectedUser.profilePicture }}">
+        <div class="instruments" *ngIf="selectedUser.instruments">
+            <p *ngFor="let instrument of selectedUser.instruments" class="badge badge-success instrument">{{ instrument.name | uppercase }}</p>
+        </div>
+        <p>{{ selectedUser.nickName }}</p>
+        <p>{{ selectedUser.description }}</p>
+        <p *ngIf="selectedUser.band">{{ selectedUser.role | titlecase }} of {{ selectedUser.band.name }}</p>
+    </div>
+    <div class="modal-footer">
+        <div class="contact">
+            <p>Email: {{ selectedUser.email }}</p>
+            <p>Phone: {{ selectedUser.phoneNumber }}</p>
+        </div>
+        <button type="button" class="btn btn-outline-dark" autofocus (click)="modal.close()">Cancel</button>
+    </div>
+</ng-template>

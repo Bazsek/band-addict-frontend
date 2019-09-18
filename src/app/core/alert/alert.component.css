@@ -1,0 +1,6 @@
+.alert {
+    top: 5px;
+    width: 50%;
+    margin: auto;
+    z-index: 2;
+}

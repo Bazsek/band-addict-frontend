@@ -1,0 +1,104 @@
+.container {
+    width: 100%;
+}
+
+.sign-up {
+    margin: 0;
+    padding: 0;
+    top: 0;
+    right: 0;
+    width: 25%;
+    background-color: #6b6b6b91;
+    position: fixed;
+    height: 100%;
+    overflow: hidden;
+
+    -webkit-box-shadow: -5px 0px 20px -5px rgba(107,107,107,0.75);
+    -moz-box-shadow: -5px 0px 20px -5px rgba(107,107,107,0.75);
+    box-shadow: -5px 0px 20px -5px rgba(107,107,107,0.75);
+
+    animation: slideIn 1s ease;
+}
+
+.quotes {
+    margin: 0;
+    padding: 10%;
+    top: 0;
+    left: 0;
+    width: 60%;
+    background-color: #ffffff00;
+    position: fixed;
+    height: 100%;
+    overflow: hidden;
+
+    animation: slideInLeft 10s ease;
+    animation-iteration-count: infinite;
+}
+
+@keyframes slideIn {
+    from { right: -25%; }
+    to { right: 0; }
+}
+
+@keyframes slideInLeft {
+    0% { left: -60%; }
+    15% { left: 0 }
+    85% { left: 0 }
+    100% { left: -60%; }
+}
+
+h2 {
+    text-align: center;
+    margin-top: 40%;
+    margin-bottom: 10%;
+    color: white;
+    font-weight: 700;
+}
+
+.form {
+    color: whitesmoke;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.button-container {
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+    margin-top: 15%;
+}
+
+.button-container a {
+    padding: 10px;
+    color: whitesmoke;
+    cursor: pointer;
+    text-decoration: none;
+    margin-left: 5%;
+}
+
+.button-container a:hover {
+    color: #eeeeeea1;
+    font-weight: bold;
+    transition-duration: 0.3s;
+}
+
+.title {
+    margin-top: 15%;
+    margin-bottom: 15%;
+    font-weight: 700;
+    color: rgb(29, 29, 29);
+}
+
+.text {
+    margin-bottom: 10%;
+    text-align: center;
+    color: rgb(29, 29, 29);
+    font-size: x-large;
+}
+
+.who {
+    text-align: right;
+    color: rgb(29, 29, 29);
+    font-size: larger;
+}

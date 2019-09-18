@@ -1,0 +1,60 @@
+<div class="dashboard">
+    <div class="card-columns card-container">
+        <div *ngFor="let post of postList">
+            <div *ngIf="!post.picture" class="card p-3">
+                <blockquote class="card-block card-blockquote">
+                    <h4>{{ post.title }}</h4>
+                    <span [innerHtml]="post.description | link"></span>
+                    <footer>
+                        <small class="text-muted">
+                                Created by <span (click)="showUser(user, post.createdBy)"><cite>{{ post.createdBy.name }}</cite></span>
+                        </small><br>
+                        <small class="text-muted center">
+                            <cite>{{ post.createdAt | date: 'dd/MM/yyyy hh:mm:ss' }}</cite>
+                        </small>
+                    </footer>
+                </blockquote>
+            </div>
+            <div *ngIf="post.picture" class="card">
+                <img class="card-img-top img-fluid" src="{{ post.picture }}" alt="Card image cap">
+                <blockquote class="card-block card-blockquote p-3">
+                    <h4>{{ post.title }}</h4>
+                    <span [innerHtml]="post.description | link"></span>
+                    <footer>
+                        <small class="text-muted">
+                            Created by <span (click)="showUser(user, post.createdBy)"><cite>{{ post.createdBy.name }}</cite></span>
+                        </small><br>
+                        <small class="text-muted center">
+                            <cite>{{ post.createdAt | date: 'dd/MM/yyyy hh:mm:ss' }}</cite>
+                        </small>
+                    </footer>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #user let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{ selectedUser.name }}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body text-center">
+        <img class="profile" src="{{ selectedUser.profilePicture === null ? '/assets/user-placeholder.png' : selectedUser.profilePicture }}">
+        <div class="instruments" *ngIf="selectedUser.instruments">
+            <p *ngFor="let instrument of selectedUser.instruments" class="badge badge-success instrument">{{ instrument.name | uppercase }}</p>
+        </div>
+        <p>{{ selectedUser.nickName }}</p>
+        <p>{{ selectedUser.description }}</p>
+        <p *ngIf="selectedUser.band">{{ selectedUser.role | titlecase }} of {{ selectedUser.band.name }}</p>
+    </div>
+    <div class="modal-footer">
+        <div class="contact">
+            <p>Email: {{ selectedUser.email }}</p>
+            <p>Phone: {{ selectedUser.phoneNumber }}</p>
+        </div>
+        <button type="button" class="btn btn-outline-dark" autofocus (click)="modal.close()">Cancel</button>
+    </div>
+</ng-template>

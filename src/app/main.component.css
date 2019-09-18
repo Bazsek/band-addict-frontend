@@ -1,0 +1,10 @@
+.main {
+    height: 100%;
+    background: transparent;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+* {
+    font-family: 'Yeon Sung', cursive;
+}
