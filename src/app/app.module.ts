@@ -30,6 +30,10 @@ import { CalendarModule } from 'angular-calendar';
 import { EventsModule } from './my-band/events/events.module';
 import { BandComponent } from './my-band/band/band.component';
 import { DatePipe } from '@angular/common';
+import { environment } from 'src/environments/environment';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireStorageModule } from 'angularfire2/storage';
 
 @NgModule({
     declarations: [
@@ -58,7 +62,10 @@ import { DatePipe } from '@angular/common';
         HomeModule,
         CoreModule,
         EventsModule,
-        CalendarModule
+        CalendarModule,
+        AngularFireModule.initializeApp(environment.firebase, 'bandaddict'),
+        AngularFirestoreModule,
+        AngularFireStorageModule
     ],
     providers: [
         AuthGuard,

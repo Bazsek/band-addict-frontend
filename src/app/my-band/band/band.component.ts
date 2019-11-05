@@ -6,6 +6,8 @@ import { MyBandService } from 'src/app/core/services/my-band.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Band } from 'src/app/core/model/band';
 import { formatDate } from '@angular/common';
+import { AngularFireStorage } from 'angularfire2/storage';
+import { UploadResponse } from 'src/app/core/model/uploadResponse';
 
 @Component({
     selector: 'app-band',
@@ -24,7 +26,8 @@ export class BandComponent implements OnInit {
         private userService: UserService,
         private myBandService: MyBandService,
         private alertService: AlertService,
-        private formBuilder: FormBuilder) { }
+        private formBuilder: FormBuilder,
+        private storage: AngularFireStorage) { }
 
     ngOnInit() {
         this.currentUser = this.userService.currentUser;
@@ -96,5 +99,28 @@ export class BandComponent implements OnInit {
 
     get myBandData() {
         return this.myBandForm.controls;
+    }
+
+    uploadLogo(event) {
+        const path = "bands/" + this.currentUser.band.id + "/logo/" + event.target.files.item(0).name;
+        const type = "logo";
+        const task = this.storage.upload(path, event.target.files.item(0)).then(() => {
+            const ref = this.storage.ref(path);
+            const downloadURL = ref.getDownloadURL().subscribe(
+                url => {
+                    const uploadRespons : UploadResponse = {
+                        path: url
+                    };
+                    this.myBandService.updateBandLogo(type, uploadRespons).subscribe(
+                        data => {
+                            this.myBand.bandLogo = url;
+                            this.alertService.success("Logo updated!")
+                        },
+                        () => this.alertService.error("Failed to save logo!")
+                    )
+                },
+                () => this.alertService.error("Failed to upload logo!")
+            )
+        });
     }
 }

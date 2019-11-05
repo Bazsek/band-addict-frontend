@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { MusicStyle } from '../model/musicStyle';
 import { Band } from '../model/band';
 import { User } from '../model/user';
+import { UploadResponse } from '../model/uploadResponse';
 
 @Injectable({ 
     providedIn: 'root' 
@@ -26,5 +27,9 @@ export class MyBandService {
 
     getBandMembers() {
         return this.http.get<User[]>(`${environment.apiUrl}/my-band/get-members`)
+    }
+
+    updateBandLogo(type: string, file: UploadResponse) {
+        return this.http.post(`${environment.apiUrl}/my-band/logo/`+ type, file)
     }
 }

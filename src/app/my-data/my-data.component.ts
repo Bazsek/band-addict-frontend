@@ -4,7 +4,8 @@ import { Instrument } from '../core/model/instrument';
 import { MyDataService } from '../core/services/my-data.service';
 import { User } from '../core/model/user';
 import { UserService, AlertService } from '../core/services';
-import { FileService } from '../core/services/file.service';
+import { AngularFireStorage } from 'angularfire2/storage';
+import { UploadResponse } from '../core/model/uploadResponse';
 
 @Component({
     selector: 'app-my-data',
@@ -24,7 +25,7 @@ export class MyDataComponent implements OnInit {
         private myDataService: MyDataService,
         private userService: UserService,
         private alertService: AlertService,
-        private fileService: FileService) {
+        private storage: AngularFireStorage) {
     }
 
     ngOnInit() {
@@ -91,22 +92,27 @@ export class MyDataComponent implements OnInit {
         this.myInstruments.splice(this.myInstruments.indexOf(inst), 1);
         this.filterInstrument = '';
     }
-    
-    uploadFile(event) {
-        let imgName = event.target.files[0].name;
-        let type = 'profile-picture';
 
-        this.fileService.getPath(type, imgName)
-            .subscribe(
-                response => {
-                    this.fileService.upload(response.path, event.target.files[0])
-                    .subscribe(
-                        () => {
-                            this.alertService.success('Profile picture changed!');
-                            this.currentUser = this.userService.currentUser;
-                        }
-                    )},
-                error => this.alertService.error('Failed to upload picture!')
-            );
+    uploadPhoto(event) {
+        const path = "users/" + this.currentUser.id + "/photo/" + event.target.files.item(0).name;
+        const type = "photo";
+        const task = this.storage.upload(path, event.target.files.item(0)).then(() => {
+            const ref = this.storage.ref(path);
+            const downloadURL = ref.getDownloadURL().subscribe(
+                url => {
+                    const uploadRespons : UploadResponse = {
+                        path: url
+                    };
+                    this.myDataService.updateUserPhoto(type, uploadRespons).subscribe(
+                        data => {
+                            this.myData.profilePicture = url;
+                            this.alertService.success("Photo updated!")
+                        },
+                        () => this.alertService.error("Failed to save photo!")
+                    )
+                },
+                () => this.alertService.error("Failed to upload photo!")
+            )
+        });
     }
 }

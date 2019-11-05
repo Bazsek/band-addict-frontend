@@ -38,11 +38,11 @@
       </div>
       <div class="upload-img">
           <div class="picture">
-              <img src='/assets/band-placeholder.png'>
+              <img src="{{ myBand.bandLogo === null ? '/assets/band-placeholder.png' : myBand.bandLogo }}">>
             </div>
           <div class="button-container">
               <button class="btn btn-success" (click)="upload.click()">Change picture</button>
-              <input hidden type="file" #upload (change)="uploadFile($event)" accept="application/jpg">
+              <input hidden type="file" #upload (change)="uploadLogo($event)" accept="application/jpg">
           </div>
       </div>
   </div>
