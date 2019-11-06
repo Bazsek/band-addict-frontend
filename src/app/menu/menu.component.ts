@@ -8,6 +8,9 @@ import { DashboardService } from '../core/services/dashboard.service';
 import { AlertService } from '../core/services';
 import { SongDTO } from '../core/model/song';
 import { Sheet } from '../core/model/sheet';
+import { finalize } from 'rxjs/operators';
+import { NgxSpinnerService } from "ngx-spinner";
+import { AngularFireStorage } from 'angularfire2/storage';
 
 @Component({
     selector: 'app-menu',
@@ -20,16 +23,21 @@ export class MenuComponent implements OnInit {
     postForm: FormGroup;
     songForm: FormGroup;
     sheetForm: FormGroup;
+    postImg: File;
+    sheetFile: File;
 
     constructor(
         private userService: UserService,
         private modalService: NgbModal,
         private formBuilder: FormBuilder,
         private dashboardService: DashboardService,
-        private alertService: AlertService) { }
+        private alertService: AlertService,
+        private spinner: NgxSpinnerService,
+        private storage: AngularFireStorage) { }
 
     ngOnInit() {
         this.currentUser = this.userService.currentUser;
+        this.postImg = null;
     }
 
     showAdvertisement(advertisement) {
@@ -64,7 +72,15 @@ export class MenuComponent implements OnInit {
         });
     }
 
-    submitAdvertisement() {
+    uploadPicture(event){
+        this.postImg = event.target.files.item(0);
+    }
+
+    uploadSheet(event){
+        this.sheetFile = event.target.files.item(0);
+    }
+
+    submitPostWithoutImage() {
         const post : PostDTO = {
             title : this.postForm.value.title,
             description: this.postForm.value.description,
@@ -82,6 +98,41 @@ export class MenuComponent implements OnInit {
                     this.alertService.error(error);
                 }
             );
+    }
+
+    submitAdvertisement() {
+        if (this.postImg === null) {
+            this.submitPostWithoutImage();
+        } else {
+            this.spinner.show();
+            const path = "users/" + this.currentUser.id + "/posts/" + this.postImg.name;
+            const type = "logo";
+            const task = this.storage.upload(path, this.postImg).then(() => {
+                const ref = this.storage.ref(path);
+                const downloadURL = ref.getDownloadURL().pipe(
+                    finalize(() => this.spinner.hide())).subscribe(
+                    url => {
+                        const post : PostDTO = {
+                            title : this.postForm.value.title,
+                            description: this.postForm.value.description,
+                            postType: this.postForm.value.category  === "" ? "Other" : this.postForm.value.category,
+                            createdAt: new Date(),
+                            picture: url
+                        };
+                        this.dashboardService.createAdvertisement(post).
+                        subscribe(
+                            () => {
+                                this.alertService.success('Success!', true);
+                            },
+                            error => {
+                                this.alertService.error(error);
+                            }
+                        );
+                    },
+                    () => this.alertService.error("Failed to upload photo!")
+                )
+            });
+        }
     }
 
     submitSong() {
@@ -106,21 +157,33 @@ export class MenuComponent implements OnInit {
     }
 
     submitSheet() {
-        const sheet : Sheet = {
-            title : this.sheetForm.value.title,
-            name: this.sheetForm.value.name,
-            instrument: this.sheetForm.value.instrument,
-            createdAt: null
-        };
-
-        this.dashboardService.uploadSheet(sheet).
-            subscribe(
-                () => {
-                    this.alertService.success('Success!', true);
+        this.spinner.show();
+        const path = "users/" + this.currentUser.id + "/sheet/" + this.sheetFile.name;
+        const type = "logo";
+        const task = this.storage.upload(path, this.sheetFile).then(() => {
+            const ref = this.storage.ref(path);
+            const downloadURL = ref.getDownloadURL().pipe(
+                finalize(() => this.spinner.hide())).subscribe(
+                url => {
+                    const sheet : Sheet = {
+                        title : this.sheetForm.value.title,
+                        name: this.sheetForm.value.name,
+                        instrument: this.sheetForm.value.instrument,
+                        createdAt: new Date(),
+                        sheet: url
+                    };
+                    this.dashboardService.uploadSheet(sheet).
+                    subscribe(
+                        () => {
+                            this.alertService.success('Success!', true);
+                        },
+                        error => {
+                            this.alertService.error(error);
+                        }
+                    );
                 },
-                error => {
-                    this.alertService.error(error);
-                }
-            );
+                () => this.alertService.error("Failed to upload sgeet!")
+            )
+        });
     }
 }

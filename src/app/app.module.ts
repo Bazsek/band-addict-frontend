@@ -34,6 +34,7 @@ import { environment } from 'src/environments/environment';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireStorageModule } from 'angularfire2/storage';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 @NgModule({
     declarations: [
@@ -65,7 +66,8 @@ import { AngularFireStorageModule } from 'angularfire2/storage';
         CalendarModule,
         AngularFireModule.initializeApp(environment.firebase, 'bandaddict'),
         AngularFirestoreModule,
-        AngularFireStorageModule
+        AngularFireStorageModule,
+        NgxSpinnerModule
     ],
     providers: [
         AuthGuard,

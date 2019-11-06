@@ -9,8 +9,9 @@
       <thead>
         <tr>
           <th scope="col">Title</th>
-          <th scope="col">Name</th>
+          <th scope="col">Description</th>
           <th scope="col">Instrument</th>
+          <th scope="col">Sheet</th>
           <th scope="col">Uploaded date</th>
           <th scope="col">Action</th>
         </tr>
@@ -20,6 +21,7 @@
             <td scope="col">{{ sheet.title }}</td>
             <td scope="col">{{ sheet.name }}</td>
             <td scope="col">{{ sheet.instrument }}</td>
+            <td scope="col"><a target="_blank" [attr.href]="sheet.sheet">Open</a></td>
             <td scope="col">{{ sheet.createdAt | date: 'dd/MM/yyyy hh:mm:ss' }}</td>
             <td scope="col">
               <i class="fa fa-edit" (click)="edit(song)"></i> | 

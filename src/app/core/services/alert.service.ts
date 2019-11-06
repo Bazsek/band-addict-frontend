@@ -12,17 +12,17 @@ export class AlertService {
 
     constructor(private router: Router) {
         router.events.
-            subscribe(
-                event => {
-                    if(event instanceof NavigationStart) {
-                        if(this.keepAfterNavigationChange){
-                            this.keepAfterNavigationChange = false;
-                        } else {
-                            this.alertSubject.next();
-                        }
+        subscribe(
+            event => {
+                if(event instanceof NavigationStart) {
+                    if(this.keepAfterNavigationChange){
+                        this.keepAfterNavigationChange = false;
+                    } else {
+                        this.alertSubject.next();
                     }
                 }
-            );
+            }
+        );
     }
 
     success(message: string, keepAfterNavigationChange = false) {

@@ -8,6 +8,8 @@ import { Band } from 'src/app/core/model/band';
 import { formatDate } from '@angular/common';
 import { AngularFireStorage } from 'angularfire2/storage';
 import { UploadResponse } from 'src/app/core/model/uploadResponse';
+import { NgxSpinnerService } from "ngx-spinner";
+import { finalize } from 'rxjs/operators';
 
 @Component({
     selector: 'app-band',
@@ -27,7 +29,8 @@ export class BandComponent implements OnInit {
         private myBandService: MyBandService,
         private alertService: AlertService,
         private formBuilder: FormBuilder,
-        private storage: AngularFireStorage) { }
+        private storage: AngularFireStorage,
+        private spinner: NgxSpinnerService) { }
 
     ngOnInit() {
         this.currentUser = this.userService.currentUser;
@@ -102,6 +105,7 @@ export class BandComponent implements OnInit {
     }
 
     uploadLogo(event) {
+        this.spinner.show();
         const path = "bands/" + this.currentUser.band.id + "/logo/" + event.target.files.item(0).name;
         const type = "logo";
         const task = this.storage.upload(path, event.target.files.item(0)).then(() => {
@@ -111,13 +115,14 @@ export class BandComponent implements OnInit {
                     const uploadRespons : UploadResponse = {
                         path: url
                     };
-                    this.myBandService.updateBandLogo(type, uploadRespons).subscribe(
-                        data => {
-                            this.myBand.bandLogo = url;
-                            this.alertService.success("Logo updated!")
-                        },
-                        () => this.alertService.error("Failed to save logo!")
-                    )
+                    this.myBandService.updateBandLogo(type, uploadRespons).pipe(
+                        finalize(() => this.spinner.hide())).subscribe(
+                            data => {
+                                this.myBand.bandLogo = url;
+                                this.alertService.success("Logo updated!")
+                            },
+                            () => this.alertService.error("Failed to save logo!")
+                        )
                 },
                 () => this.alertService.error("Failed to upload logo!")
             )

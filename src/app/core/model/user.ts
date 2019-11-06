@@ -1,6 +1,5 @@
 import { Instrument } from './instrument';
 import { Band } from './band';
-import { Sheet } from './sheet';
 
 export interface User {
     id?: number;

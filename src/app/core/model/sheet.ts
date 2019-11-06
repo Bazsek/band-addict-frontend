@@ -6,4 +6,5 @@ export interface Sheet {
     instrument: string;
     name: string;
     createdAt?: Date;
+    sheet: string;
 }

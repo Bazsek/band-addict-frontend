@@ -1,3 +1,4 @@
+<ngx-spinner bdColor="rgba(70, 70, 70, 0.8)" size="medium" color="#fff" type="line-scale"></ngx-spinner>
 <div class="navbar">
     <ul class="buttons">
         <li><a routerLink='/dashboard'>Dashboard</a></li>
@@ -42,6 +43,7 @@
                     <option value="Advertisement">Advertisement</option>
                     <option value="Event">Event</option>
                     <option value="Curiosity">Curiosity</option>
+                    <option value="Other">Other</option>
                   </select>
                 <div *ngIf="submitted && postData.category.errors" class="invalid-feedback">
                 <div *ngIf="postData.category.errors.required">Category is required</div>
@@ -56,10 +58,15 @@
                     <div *ngIf="postData.description.errors">Invalid description</div>
                 </div>
             </div>
+            <div class="button-container">
+                <button class="btn btn-success" (click)="upload.click()">Upload picture</button>
+                <input hidden type="file" #upload (change)="uploadPicture($event)" accept="application/jpg">
+                <p *ngIf="postImg != null">{{ postImg.name }}</p>
+            </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-success" ngbAutofocus (click)="submitAdvertisement()">Submit</button>
-            <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Cancel</button>
+            <button type="button" class="btn btn-success" ngbAutofocus (click)="submitAdvertisement(); modal.close();">Submit</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.close(); postImg = null;">Cancel</button>
         </div>
     </form>
 </ng-template>
@@ -119,7 +126,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-success" ngbAutofocus (click)="submitSong()">Submit</button>
+            <button type="button" class="btn btn-success" ngbAutofocus (click)="submitSong(); modal.close();">Submit</button>
             <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Cancel</button>
         </div>
     </form>
@@ -143,7 +150,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="name">Name</label>
+                <label for="name">Description</label>
                 <textarea type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && sheetData.name.errors }"></textarea>
                 <div *ngIf="submitted && sheetData.name.errors" class="invalid-feedback">
                 <div *ngIf="sheetData.name.errors.required">Name is required</div>
@@ -158,10 +165,15 @@
                     <div *ngIf="sheetData.instrument.errors">Invalid instrument</div>
                 </div>
             </div>
+            <div class="button-container">
+                <button class="btn btn-success" (click)="sheetUpload.click()">Upload sheet</button>
+                <input hidden type="file" #sheetUpload (change)="uploadSheet($event)" accept="application/pdf">
+                <p *ngIf="sheetFile != null">{{ sheetFile.name }}</p>
+            </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-success" ngbAutofocus (click)="submitSheet()">Submit</button>
-            <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Cancel</button>
+            <button type="button" class="btn btn-success" [disabled]="sheetFile == null" ngbAutofocus (click)="submitSheet(); modal.close();">Submit</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.close(); sheetFile = null;">Cancel</button>
         </div>
     </form>
 </ng-template>

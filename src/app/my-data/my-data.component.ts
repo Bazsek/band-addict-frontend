@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Instrument } from '../core/model/instrument';
 import { MyDataService } from '../core/services/my-data.service';
@@ -6,6 +6,8 @@ import { User } from '../core/model/user';
 import { UserService, AlertService } from '../core/services';
 import { AngularFireStorage } from 'angularfire2/storage';
 import { UploadResponse } from '../core/model/uploadResponse';
+import { finalize } from 'rxjs/operators';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
     selector: 'app-my-data',
@@ -25,7 +27,8 @@ export class MyDataComponent implements OnInit {
         private myDataService: MyDataService,
         private userService: UserService,
         private alertService: AlertService,
-        private storage: AngularFireStorage) {
+        private storage: AngularFireStorage,
+        private spinner: NgxSpinnerService) {
     }
 
     ngOnInit() {
@@ -94,18 +97,20 @@ export class MyDataComponent implements OnInit {
     }
 
     uploadPhoto(event) {
+        this.spinner.show();
         const path = "users/" + this.currentUser.id + "/photo/" + event.target.files.item(0).name;
         const type = "photo";
         const task = this.storage.upload(path, event.target.files.item(0)).then(() => {
             const ref = this.storage.ref(path);
-            const downloadURL = ref.getDownloadURL().subscribe(
+            const downloadURL = ref.getDownloadURL().pipe(
+                finalize(() => this.spinner.hide())).subscribe(
                 url => {
                     const uploadRespons : UploadResponse = {
                         path: url
                     };
                     this.myDataService.updateUserPhoto(type, uploadRespons).subscribe(
                         data => {
-                            this.myData.profilePicture = url;
+                            this.currentUser.profilePicture = url;
                             this.alertService.success("Photo updated!")
                         },
                         () => this.alertService.error("Failed to save photo!")
