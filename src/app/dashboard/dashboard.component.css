@@ -47,3 +47,19 @@
     width: 350px;
     padding-left: 20px;
 }
+
+.advertisement {
+    background-color:rgb(254, 255, 213);
+}
+
+.curiosity {
+    background-color: rgb(255, 230, 230);
+}
+
+.event {
+    background-color: rgb(227, 253, 219);
+}
+
+.other {
+    background-color: whitesmoke;
+}

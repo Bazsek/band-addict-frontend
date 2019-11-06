@@ -1,7 +1,7 @@
 <div class="dashboard">
     <div class="card-columns card-container">
         <div *ngFor="let post of postList">
-            <div *ngIf="!post.picture" class="card p-3">
+            <div *ngIf="!post.picture" class="card p-3" [ngClass]="post.postType | lowercase">
                 <blockquote class="card-block card-blockquote">
                     <h4>{{ post.title }}</h4>
                     <span [innerHtml]="post.description | link"></span>
@@ -15,7 +15,7 @@
                     </footer>
                 </blockquote>
             </div>
-            <div *ngIf="post.picture" class="card">
+            <div *ngIf="post.picture" class="card" [ngClass]="post.postType | lowercase">
                 <img class="card-img-top img-fluid" src="{{ post.picture }}" alt="Card image cap">
                 <blockquote class="card-block card-blockquote p-3">
                     <h4>{{ post.title }}</h4>

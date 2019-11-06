@@ -1,22 +1,26 @@
 <ngx-spinner bdColor="rgba(70, 70, 70, 0.8)" size="medium" color="#fff" type="line-scale"></ngx-spinner>
 <div class="navbar">
     <ul class="buttons">
-        <li><a routerLink='/dashboard'>Dashboard</a></li>
-        <li><a routerLink='/my-data'>My data</a></li>
-        <li><a routerLink='/my-band/band'>My band</a></li>
-        <li><a routerLink='/song/songs'>Songs</a></li>
-        <li><a routerLink='/about'>About</a></li>
-        <li class="right">
+        <li><a routerLink='/dashboard'><img src="/assets/inverted-favicon.png" style="height: 25px;"></a></li>
+        <li>
+            <div class="search">
+                <input class="form-control" type="text" placeholder="Search">
+              </div>
+        </li>
+        <li class="right" title="Log out">
             <p [routerLink]="['/login']">
-                <span class="right">&crarr;Logout</span>
+                <span class="right"><i class="fa fa-share"></i></span>
             </p>
         </li>
+        <li class="right" title="About"><a routerLink='/about'><i class="fa fa-reorder"></i></a></li>
         <li class="right" data-toggle="tooltip" data-placement="bottom" [attr.title]="currentUser | userdetails">
             <a routerLink='/my-data'><img class="profile" src="{{ currentUser.profilePicture === null ? '/assets/user-placeholder.png' : currentUser.profilePicture }}">{{ currentUser.name }}</a>
         </li>
-        <li class="right"><span (click)="showSong(song)">&oplus;  Song</span></li>
-        <li class="right"><span (click)="showAdvertisement(advertisement)">&oplus;  Post</span></li>
-        <li class="right"><span (click)="showSheet(sheet)">&oplus;  Sheet</span></li>
+        <li class="right"><a routerLink='/song/songs'>Songs</a></li>
+        <li class="right"><a routerLink='/my-band/band'>My band</a></li>
+        <li class="right" title="Add new music"><span (click)="showSong(song)"><i class="fa fa-music"></i></span></li>
+        <li class="right" title="Create new post"><span (click)="showAdvertisement(advertisement)"><i class="fa fa-text-width"></i></span></li>
+        <li class="right" title="Upload new sheet"><span (click)="showSheet(sheet)"><i class="fa fa-file-pdf-o"></i></span></li>
     </ul>
 </div>
 

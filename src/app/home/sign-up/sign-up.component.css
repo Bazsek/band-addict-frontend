@@ -20,9 +20,31 @@
     animation: slideIn 1s ease;
 }
 
+.quotes {
+    margin: 0;
+    padding: 5% 10% 5% 10% ;
+    top: 0;
+    left: 0;
+    width: 60%;
+    background-color: #ffffff00;
+    position: fixed;
+    height: 100%;
+    overflow: hidden;
+
+    animation: slideInLeft 10s ease;
+    animation-iteration-count: infinite;
+}
+
 @keyframes slideIn {
     from { right: -25%; }
     to { right: 0; }
+}
+
+@keyframes slideInLeft {
+    0% { left: -60%; }
+    15% { left: 0 }
+    85% { left: 0 }
+    100% { left: -60%; }
 }
 
 h2 {
@@ -41,21 +63,86 @@ h2 {
 }
 
 .button-container {
-    width: 50%;
-    margin-left: 25%;
-    margin-right: 25%;
-    margin-top: 15%;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 10%;
 }
 
-.button-container a {
-    padding: 10px;
-    color: whitesmoke;
-    cursor: pointer;
-    text-decoration: none;
-    margin-left: 5%;
+.title {
+    margin-top: 15%;
+    margin-bottom: 15%;
+    font-weight: 700;
+    color: rgb(46, 46, 46);
 }
-.button-container a:hover {
-    color: #eeeeeea1;
-    font-weight: bold;
-    transition-duration: 0.3s;
+
+.text {
+    margin-bottom: 10%;
+    text-align: center;
+    color: rgb(46, 46, 46);
+    font-size: x-large;
+}
+
+.who {
+    text-align: right;
+    color: rgb(46, 46, 46);
+    font-size: larger;
+}
+
+.logo {
+    padding-right: 5%;
+}
+
+a {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.col {
+	display: block;
+	float:left;
+	margin: 1% 0 1% 1.6%;
+}
+
+.col:first-of-type {
+    margin-left: 0;
+}
+
+.button{
+    display: inline-block;
+    padding: 10px 15px;
+    position: relative;
+    color: whitesmoke;
+}
+
+#button-5{
+    color: whitesmoke;
+    overflow: hidden;
+}
+  
+#button-5:before, #button-5:after{
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background-color: white;
+    top: 0;
+    left: -100%;
+    -webkit-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+  
+#button-5:after{
+    bottom: 0 !important;
+    top: auto !important;
+    right: -100%;
+    left: auto;
+}
+  
+#button-5:hover:before{
+    left: 0;
+}
+  
+#button-5:hover:after{
+    right: 0;
 }

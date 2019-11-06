@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, Route } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService, AlertService } from 'src/app/core/services';
-import { Observable, interval, Subscription } from 'rxjs';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-sign-in',
@@ -38,7 +38,7 @@ export class SignInComponent implements OnInit, OnDestroy {
       private alertService: AlertService) { }
 
   ngOnInit() {
-      this.selectedQuote = this.quotes[0];
+      this.selectedQuote = this.quotes[Math.floor(Math.random() * 10) + 1];
       this.loginForm = this.formBuilder.group({
           email: ['', Validators.required],
           password: ['', Validators.required]
