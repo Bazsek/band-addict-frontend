@@ -1,0 +1,24 @@
+.alert {
+    top: 50px;
+    width: 500px;
+    z-index: 2;
+    left: 75px;
+    position: fixed;
+}
+
+.result {
+    background-color: whitesmoke;
+}
+
+.no-result {
+    background-image: url("/assets/not-found.png");
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.search-row:hover {
+    background-color: rgb(223, 223, 223);
+    border-radius: 15px;
+    cursor: pointer;
+}

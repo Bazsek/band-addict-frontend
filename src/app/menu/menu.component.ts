@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { User } from '../core/model/user';
 import { UserService } from '../core/services/user.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -8,16 +8,20 @@ import { DashboardService } from '../core/services/dashboard.service';
 import { AlertService } from '../core/services';
 import { SongDTO } from '../core/model/song';
 import { Sheet } from '../core/model/sheet';
-import { finalize } from 'rxjs/operators';
+import { finalize, map, debounceTime, distinctUntilChanged, mergeMap, delay } from 'rxjs/operators';
 import { NgxSpinnerService } from "ngx-spinner";
 import { AngularFireStorage } from 'angularfire2/storage';
+import { Subject, Subscription, of } from 'rxjs';
+import { SearchResponse } from '../core/model/searchResponse';
+import { SearchService } from '../core/services/search.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-menu',
     templateUrl: './menu.component.html',
     styleUrls: ['./menu.component.css']
 })
-export class MenuComponent implements OnInit {
+export class MenuComponent implements OnInit, OnDestroy {
     currentUser: User;
     currentBand: false;
     postForm: FormGroup;
@@ -25,7 +29,9 @@ export class MenuComponent implements OnInit {
     sheetForm: FormGroup;
     postImg: File;
     sheetFile: File;
-
+    searchResult: SearchResponse[] = [];
+    keyUp: Subject<string> = new Subject();
+    
     constructor(
         private userService: UserService,
         private modalService: NgbModal,
@@ -33,11 +39,37 @@ export class MenuComponent implements OnInit {
         private dashboardService: DashboardService,
         private alertService: AlertService,
         private spinner: NgxSpinnerService,
-        private storage: AngularFireStorage) { }
+        private storage: AngularFireStorage,
+        private searchService: SearchService,
+        private router: Router) {
+
+        }
 
     ngOnInit() {
         this.currentUser = this.userService.currentUser;
         this.postImg = null;
+        this.keyUp.pipe(
+            debounceTime(1000)
+          ).subscribe(
+              searchTextValue => this.dashboardService.search(searchTextValue).subscribe(
+                  data => this.searchService.success(data),
+                  () => this.searchService.error(null)
+              )
+          );
+    }
+
+    ngOnDestroy(): void {
+        this.keyUp.unsubscribe();
+    }
+
+    onKeyUp(searchTextValue: string){
+        if (searchTextValue.length > 2) {
+            this.keyUp.next(searchTextValue);
+        }
+    }
+
+    search(text: string) {
+        this.router.navigate(['/search-result', {param: text, type: "All"}]);
     }
 
     showAdvertisement(advertisement) {

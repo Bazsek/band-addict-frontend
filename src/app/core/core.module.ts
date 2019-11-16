@@ -5,6 +5,7 @@ import { AlertComponent } from './alert/alert.component';
 import { Filter } from './pipe/filter.pipe';
 import { UserDetails } from './pipe/userdetauls.pipe';
 import { Link } from './pipe/link.pipe';
+import { SearchResultComponent } from './search/search-result.component';
 
 @NgModule({
     imports: [
@@ -15,14 +16,16 @@ import { Link } from './pipe/link.pipe';
         AlertComponent,
         Filter,
         UserDetails,
-        Link
+        Link,
+        SearchResultComponent
     ],
     exports: [
         CommonModule,
         AlertComponent,
         Filter,
         UserDetails,
-        Link
+        Link,
+        SearchResultComponent
     ],
     providers: [
         Filter,

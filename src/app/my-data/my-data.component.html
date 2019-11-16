@@ -55,12 +55,25 @@
             </form>
         </div>
         <div class="upload-img">
-            <div class="picture">
-                <img src="{{ currentUser.profilePicture === null ? '/assets/user-placeholder.png' : currentUser.profilePicture }}">
+           <div class="picture">
+                <img *ngIf="!isCropper" src="{{ currentUser.profilePicture === null ? '/assets/user-placeholder.png' : currentUser.profilePicture }}">
+                <image-cropper
+                    *ngIf="isCropper"
+                    class="cropper"
+                    [imageChangedEvent]="imageChangedEvent"
+                    [maintainAspectRatio]="true"
+                    [aspectRatio]="1 / 1"
+                    [resizeToWidth]="300"
+                    format="png"
+                    (imageCropped)="imageCropped($event)"
+                    (loadImageFailed)="loadImageFailed()"
+                ></image-cropper>
             </div>
             <div class="button-container">
-                <button class="btn btn-success" (click)="upload.click()">Change picture</button>
-                <input hidden type="file" #upload (change)="uploadPhoto($event)" accept="application/jpg">
+                <button *ngIf="!isCropper" class="btn btn-success" (click)="upload.click()">Change picture</button>
+                <button *ngIf="isCropper" class="btn btn-success" (click)="uploadPhoto()">Crop & upload</button>
+                <button *ngIf="isCropper" class="btn btn-secondary" (click)="this.isCropper = !this.isCropper">Cancel</button>
+                <input hidden type="file" #upload (change)="fileChangeEvent($event); this.isCropper = !this.isCropper;" accept="application/jpg">
             </div>
         </div>
     </div>

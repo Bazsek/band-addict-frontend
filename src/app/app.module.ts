@@ -13,7 +13,6 @@ import { AlertService } from './core/services/alert.service';
 import { UserService } from './core/services/user.service';
 import { JwtInterceptor } from './core/interceptor/jwt.interceptor';
 import { ErrorInterceptor } from './core/interceptor/error.interceptor';
-import { CoreModule } from './core/core.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeModule } from './home/home.module';
 import { MenuComponent } from './menu/menu.component';
@@ -24,7 +23,6 @@ import { SongComponent } from './song/song.component';
 import { FileSelectDirective } from '../../node_modules/ng2-file-upload/ng2-file-upload';
 import { SongsComponent } from './song/songs/songs.component';
 import { SheetsComponent } from './song/sheets/sheets.component';
-import { SearchComponent } from './song/search/search.component';
 import { MembersComponent } from './my-band/members/members.component';
 import { CalendarModule } from 'angular-calendar';
 import { EventsModule } from './my-band/events/events.module';
@@ -35,6 +33,12 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { SearchService } from './core/services/search.service';
+import { CoreModule } from './core/core.module';
+import { SearchComponent } from './song/search/search.component';
+import { OpenSearchResultComponent } from './open-search-result/open-search-result.component';
+import { NgxLinkifyjsModule } from 'ngx-linkifyjs';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
     declarations: [
@@ -49,9 +53,10 @@ import { NgxSpinnerModule } from "ngx-spinner";
         FileSelectDirective,
         SongsComponent,
         SheetsComponent,
-        SearchComponent,
         MembersComponent,
-        BandComponent
+        BandComponent,
+        SearchComponent,
+        OpenSearchResultComponent
     ],
     imports: [
         BrowserModule,
@@ -67,12 +72,15 @@ import { NgxSpinnerModule } from "ngx-spinner";
         AngularFireModule.initializeApp(environment.firebase, 'bandaddict'),
         AngularFirestoreModule,
         AngularFireStorageModule,
-        NgxSpinnerModule
+        NgxSpinnerModule,
+        NgxLinkifyjsModule.forRoot(),
+        ImageCropperModule
     ],
     providers: [
         AuthGuard,
         AlertService,
         UserService,
+        SearchService,
         DatePipe,
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }

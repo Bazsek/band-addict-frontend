@@ -15,6 +15,7 @@ import { SearchComponent } from './song/search/search.component';
 import { MembersComponent } from './my-band/members/members.component';
 import { EventsComponent } from './my-band/events/events.component';
 import { BandComponent } from './my-band/band/band.component';
+import { OpenSearchResultComponent } from './open-search-result/open-search-result.component';
 
 const routes: Routes = [
     { path: '', component: MainComponent, resolve: { isLoggedIn: UserResolver }, canActivate: [AuthGuard], children: [
@@ -30,7 +31,8 @@ const routes: Routes = [
             { path: 'sheets', component: SheetsComponent },
             { path: 'search', component: SearchComponent }
         ] },
-        { path: 'about', component: AboutComponent }
+        { path: 'about', component: AboutComponent },
+        { path: 'search-result', component: OpenSearchResultComponent }
     ] },
     { path: '**', redirectTo: 'sign-in' }
 ];

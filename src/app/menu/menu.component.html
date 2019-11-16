@@ -4,8 +4,8 @@
         <li><a routerLink='/dashboard'><img src="/assets/inverted-favicon.png" style="height: 25px;"></a></li>
         <li>
             <div class="search">
-                <input class="form-control" type="text" placeholder="Search">
-              </div>
+                <input class="form-control" type="text" placeholder="Search" id="searchText" #searchText (keyup)="onKeyUp(searchText.value)" (keydown.enter)="search(searchText.value)">
+            </div>
         </li>
         <li class="right" title="Log out">
             <p [routerLink]="['/login']">

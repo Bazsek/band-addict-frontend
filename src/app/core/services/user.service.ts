@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { User } from '../model/user';
-import { Band } from '../model/band';
 
 @Injectable({
     providedIn: 'root'
@@ -29,5 +28,9 @@ export class UserService {
 
     activate(user: User) {
         return this.http.patch(`${environment.apiUrl}/activate`, user)
+    }
+
+    getUserById(id: number) {
+        return this.http.get<User>(`${environment.apiUrl}/get-user-by-id/` + id)
     }
 }

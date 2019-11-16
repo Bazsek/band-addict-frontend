@@ -1,0 +1,51 @@
+<div class="search-result ">
+  <h2>Search results:</h2>
+  <div *ngFor="let band of bands" class="band">
+    <div class="picture">
+      <img src="{{band.bandLogo === null ? '/assets/band-placeholder.png' : band.bandLogo}}">
+    </div>
+    <div class="content">
+        <ul>
+          <li>{{band.name}}</li>
+          <li>{{band.country}}</li>
+          <li>{{band.shortDescription}}</li>
+          <li>{{band.formedDate | date: 'dd/MM/yyyy'}}</li>
+          <li>
+            <p class="badge badge-success" *ngFor="let style of band.styles" [attr.title]="style.description">{{ style.name | uppercase }}</p>
+          </li>
+          <li>
+            <img *ngFor="let member of band.bandMembers" src="{{member.profilePicture === null ? '/assets/user-placeholder.png' : member.profilePicture}}">
+          </li>
+          <li title="For check the songs, click here">Songs</li>
+        </ul>
+    </div>
+  </div>
+  <div *ngFor="let user of users" class="user">
+    <div class="picture">
+        <img src="{{user.profilePicture === null ? '/assets/user-placeholder.png' : user.profilePicture}}">
+      </div>
+      <div class="content">
+          <ul>
+            <li>{{user.name}} ( {{user.nickName}} )</li>
+            <li>{{user.band.name}} - {{user.role}}</li>
+            <li>{{user.description}}</li>
+            <li>
+              <p class="badge badge-success" *ngFor="let instrument of user.instruments" [attr.title]="instrument.description">{{ instrument.name | uppercase }}</p>
+            </li>
+          </ul>
+      </div>
+    </div>
+  <div *ngFor="let post of posts" class="post">
+      <div class="picture">
+        <iframe *ngIf="findLink(post.description)" width="360" height="240" [src]='safeUrl(findLink(post.description))' frameborder="0" allowfullscreen></iframe>
+        <img *ngIf="!findLink(post.description)" src="{{post.picture == null ? 'assets/band-placeholder.png' : post.picture}}">
+      </div>
+      <div class="content">
+          <ul>
+            <li>{{post.title}}</li>
+            <li>{{post.description}}</li>
+            <li>{{post.createdAt | date: 'dd/MM/yyyy hh:mm:ss'}}</li>
+          </ul>
+      </div>
+  </div>
+</div>

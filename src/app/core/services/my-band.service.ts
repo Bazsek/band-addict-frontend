@@ -32,4 +32,8 @@ export class MyBandService {
     updateBandLogo(type: string, file: UploadResponse) {
         return this.http.post(`${environment.apiUrl}/my-band/logo/`+ type, file)
     }
+
+    getBandById(id: number) {
+        return this.http.get<Band>(`${environment.apiUrl}/get-band-by-id/` + id)
+    }
 }

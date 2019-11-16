@@ -39,11 +39,24 @@
       </div>
       <div class="upload-img">
           <div class="picture">
-              <img src="{{ myBand.bandLogo === null ? '/assets/band-placeholder.png' : myBand.bandLogo }}">
+              <img *ngIf="!isCropper" src="{{ myBand.bandLogo === null ? '/assets/band-placeholder.png' : myBand.bandLogo }}">
+              <image-cropper
+                    *ngIf="isCropper"
+                    class="cropper"
+                    [imageChangedEvent]="imageChangedEvent"
+                    [maintainAspectRatio]="true"
+                    [aspectRatio]="1 / 1"
+                    [resizeToWidth]="300"
+                    format="png"
+                    (imageCropped)="imageCropped($event)"
+                    (loadImageFailed)="loadImageFailed()"
+                ></image-cropper>
             </div>
           <div class="button-container">
-              <button class="btn btn-success" (click)="upload.click()">Change picture</button>
-              <input hidden type="file" #upload (change)="uploadLogo($event)" accept="application/jpg">
+              <button *ngIf="!isCropper" class="btn btn-success" (click)="upload.click()">Change picture</button>
+              <button *ngIf="isCropper" class="btn btn-success" (click)="uploadLogo()">Crop & upload</button>
+              <button *ngIf="isCropper" class="btn btn-secondary" (click)="this.isCropper = !this.isCropper">Cancel</button>
+              <input hidden type="file" #upload (change)="fileChangeEvent($event); this.isCropper = !this.isCropper;" accept="application/jpg">
           </div>
       </div>
   </div>

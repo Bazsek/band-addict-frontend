@@ -1,0 +1,6 @@
+<div *ngIf="message && searchResult !== null" class="alert" [ngClass]="{ 'alert': message, 
+'result': message.type === 'success', 'no-result': message.type === 'error' }">
+    <p *ngFor="let res of searchResult | slice:0:6" class="search-row" (click)="open(res)">
+      <img src="{{res.img ? res.img : 'assets/user-placeholder.png'}}" width="30px" height="30px" style="border-radius: 50%;">
+      {{res.text}}</p>
+</div>

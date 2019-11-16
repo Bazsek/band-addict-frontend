@@ -29,7 +29,11 @@ h2 {
     margin-top: 5%;
     display: flex;
     justify-content: center;
+}
 
+.button-container button {
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .styles {
@@ -57,5 +61,13 @@ h2 {
     margin: auto;
     height: 350px;
     width: 350px;
+    border: 1px solid black;
+}
+
+.cropper {
+    margin: auto;
+    height: auto;
+    min-height: 450px;
+    width: 450px;
     border: 1px solid black;
 }
