@@ -11,10 +11,12 @@ import { Sheet } from '../core/model/sheet';
 import { finalize, map, debounceTime, distinctUntilChanged, mergeMap, delay } from 'rxjs/operators';
 import { NgxSpinnerService } from "ngx-spinner";
 import { AngularFireStorage } from 'angularfire2/storage';
-import { Subject, Subscription, of } from 'rxjs';
+import { Subject, Subscription, of, ReplaySubject } from 'rxjs';
 import { SearchResponse } from '../core/model/searchResponse';
 import { SearchService } from '../core/services/search.service';
 import { Router } from '@angular/router';
+import { MyBandService } from '../core/services/my-band.service';
+import { Event } from '../core/model/event';
 
 @Component({
     selector: 'app-menu',
@@ -27,10 +29,11 @@ export class MenuComponent implements OnInit, OnDestroy {
     postForm: FormGroup;
     songForm: FormGroup;
     sheetForm: FormGroup;
+    eventForm: FormGroup;
     postImg: File;
     sheetFile: File;
     searchResult: SearchResponse[] = [];
-    keyUp: Subject<string> = new Subject();
+    keyUp: ReplaySubject<string> = new ReplaySubject();
     
     constructor(
         private userService: UserService,
@@ -41,7 +44,8 @@ export class MenuComponent implements OnInit, OnDestroy {
         private spinner: NgxSpinnerService,
         private storage: AngularFireStorage,
         private searchService: SearchService,
-        private router: Router) {
+        private router: Router,
+        private bandService: MyBandService) {
 
         }
 
@@ -101,6 +105,16 @@ export class MenuComponent implements OnInit, OnDestroy {
             title: ['', Validators.required],
             name: '',
             instrument: ['', Validators.required],
+        });
+    }
+
+    showEvent(event) {
+        this.modalService.open(event, {size: 'lg', centered: true, ariaLabelledBy: 'modal-basic-title'}),
+        this.eventForm = this.formBuilder.group({
+            title: ['', Validators.required],
+            start: ['', Validators.required],
+            end: '',
+            description: ['', Validators.required],
         });
     }
 
@@ -217,5 +231,21 @@ export class MenuComponent implements OnInit, OnDestroy {
                 () => this.alertService.error("Failed to upload sgeet!")
             )
         });
+    }
+
+    submitEvent() {
+        const saveEvent : Event = {
+            title : this.eventForm.value.title,
+            description: this.eventForm.value.description,
+            start: this.eventForm.value.start,
+            end: this.eventForm.value.end,
+            type: null
+          };
+      
+        this.bandService.addEvent(saveEvent).
+            subscribe(
+                () => this.alertService.success('Success!', true),
+                error => this.alertService.error("Failed to save event!")
+            );
     }
 }

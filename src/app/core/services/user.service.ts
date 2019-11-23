@@ -33,4 +33,8 @@ export class UserService {
     getUserById(id: number) {
         return this.http.get<User>(`${environment.apiUrl}/get-user-by-id/` + id)
     }
+
+    searchUsers(value: string) {
+        return this.http.get<User[]>(`${environment.apiUrl}/search/` + value)
+    }
 }

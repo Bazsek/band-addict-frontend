@@ -13,11 +13,12 @@
             </p>
         </li>
         <li class="right" title="About"><a routerLink='/about'><i class="fa fa-reorder"></i></a></li>
+        <li class="right"><a routerLink='/song/songs'>Songs</a></li>
+        <li class="right"><a routerLink='/my-band/band'>My band</a></li>
         <li class="right" data-toggle="tooltip" data-placement="bottom" [attr.title]="currentUser | userdetails">
             <a routerLink='/my-data'><img class="profile" src="{{ currentUser.profilePicture === null ? '/assets/user-placeholder.png' : currentUser.profilePicture }}">{{ currentUser.name }}</a>
         </li>
-        <li class="right"><a routerLink='/song/songs'>Songs</a></li>
-        <li class="right"><a routerLink='/my-band/band'>My band</a></li>
+        <li class="right" title="Create new event"><span (click)="showEvent(event)"><i class="fa fa-calendar"></i></span></li>
         <li class="right" title="Add new music"><span (click)="showSong(song)"><i class="fa fa-music"></i></span></li>
         <li class="right" title="Create new post"><span (click)="showAdvertisement(advertisement)"><i class="fa fa-text-width"></i></span></li>
         <li class="right" title="Upload new sheet"><span (click)="showSheet(sheet)"><i class="fa fa-file-pdf-o"></i></span></li>
@@ -178,6 +179,56 @@
         <div class="modal-footer">
             <button type="button" class="btn btn-success" [disabled]="sheetFile == null" ngbAutofocus (click)="submitSheet(); modal.close();">Submit</button>
             <button type="button" class="btn btn-outline-dark" (click)="modal.close(); sheetFile = null;">Cancel</button>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #event let-close="close">
+    <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+        <div class="modal-header">
+            <div class="form-group title">
+                <label for="title">Title</label>
+                <input type="text" formControlName="title" class="form-control" [ngClass]="{ 'is-invalid': submitted && eventData.title.errors }" />
+                <div *ngIf="submitted && eventData.title.errors" class="invalid-feedback">
+                <div *ngIf="eventData.title.errors.required">Title is required</div>
+                    <div *ngIf="eventData.title.errors">Invalid title</div>
+                </div>
+            </div>
+            <button type="button" class="close" (click)="close(); this.activeDayIsOpen = false;">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="date-group">
+            <div class="form-group half">
+                <label for="start">Start</label>
+                <input type="date" formControlName="start" class="form-control" [ngClass]="{ 'is-invalid': submitted && eventData.start.errors }" />
+                <div *ngIf="submitted && eventData.start.errors" class="invalid-feedback">
+                <div *ngIf="eventData.start.errors.required">Start date is required</div>
+                    <div *ngIf="eventData.start.errors">Invalid start date</div>
+                </div>
+            </div>
+            <div class="form-group half">
+                <label for="end">End</label>
+                <input type="date" formControlName="end" class="form-control" [ngClass]="{ 'is-invalid': submitted && eventData.end.errors }" />
+                <div *ngIf="submitted && eventData.end.errors" class="invalid-feedback">
+                <div *ngIf="eventData.end.errors.required">End date is required</div>
+                    <div *ngIf="eventData.end.errors">Invalid end date</div>
+                </div>
+            </div>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea type="text" formControlName="description" class="form-control" [ngClass]="{ 'is-invalid': submitted && eventData.description.errors }"></textarea>
+                <div *ngIf="submitted && eventData.description.errors" class="invalid-feedback">
+                <div *ngIf="eventData.description.errors.required">Description is required</div>
+                    <div *ngIf="eventData.description.errors">Invalid description</div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" ngbAutofocus (click)="submitEvent(); close();">Save</button>
+            <button type="button" class="btn btn-outline-dark" (click)="close()">Cancel</button>
         </div>
     </form>
 </ng-template>

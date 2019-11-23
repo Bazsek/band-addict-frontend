@@ -106,3 +106,16 @@ h2 {
     background-color: brown;
     z-index: 1000;
 }
+
+.half {
+    width: 45%;
+    margin-right: 10%;
+}
+
+.date-group {
+    display: flex;
+}
+
+.title {
+    width: 60%;
+}

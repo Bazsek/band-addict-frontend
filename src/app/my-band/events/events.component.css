@@ -14,3 +14,20 @@ pre {
     margin-right: 10%;
     cursor: pointer;
 }
+
+.half {
+    width: 45%;
+    margin-right: 10%;
+}
+
+.date-group {
+    display: flex;
+}
+
+.title {
+    width: 60%;
+}
+
+.cal-event-action i {
+    color: #000;
+}

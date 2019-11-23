@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { MusicStyle } from '../model/musicStyle';
 import { Band } from '../model/band';
 import { User } from '../model/user';
+import { Event } from '../model/event';
 import { UploadResponse } from '../model/uploadResponse';
 
 @Injectable({ 
@@ -35,5 +36,33 @@ export class MyBandService {
 
     getBandById(id: number) {
         return this.http.get<Band>(`${environment.apiUrl}/get-band-by-id/` + id)
+    }
+
+    removeBandMember(id: number) {
+        return this.http.post(`${environment.apiUrl}/my-band/remove`, id)
+    }
+
+    addBandMember(id: number) {
+        return this.http.post(`${environment.apiUrl}/my-band/add`, id)
+    }
+
+    changeRole(id: number, value: string) {
+        return this.http.post(`${environment.apiUrl}/my-band/role/`+id, value)
+    }
+
+    addEvent(event: Event) {
+        return this.http.post(`${environment.apiUrl}/my-band/event/add`, event)
+    }
+
+    getEvents() {
+        return this.http.get<Event[]>(`${environment.apiUrl}/my-band/event/get`)
+    }
+
+    editEvent(event: Event) {
+        return this.http.patch(`${environment.apiUrl}/my-band/event/edit`, event)
+    }
+
+    deleteEvent(id: number) {
+        return this.http.delete(`${environment.apiUrl}/my-band/event/delete/` + id)
     }
 }

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap/';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { EventsComponent } from './events.component';
@@ -12,6 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         BrowserAnimationsModule,
         CommonModule,
         FormsModule,
+        ReactiveFormsModule,
         NgbModalModule.forRoot(),
         CalendarModule.forRoot({
             provide: DateAdapter,

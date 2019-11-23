@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
+import { Subject, Observable, ReplaySubject } from 'rxjs';
 import { Router, NavigationStart } from '@angular/router';
 
 @Injectable({
@@ -7,8 +7,8 @@ import { Router, NavigationStart } from '@angular/router';
 })
 export class SearchService {
 
-    private alertSubject = new Subject<any>();
-    private keepAfterNavigationChange = true;
+    private alertSubject = new ReplaySubject<any>();
+    private keepAfterNavigationChange = false;
 
     constructor(private router: Router) {
         router.events.
@@ -26,7 +26,7 @@ export class SearchService {
     }
 
     success(message: any) {
-        this.keepAfterNavigationChange = true;
+        this.keepAfterNavigationChange = false;
         this.alertSubject.next({
             type: 'success',
             text: message
@@ -34,7 +34,7 @@ export class SearchService {
     }
 
     error(message: any) {
-        this.keepAfterNavigationChange = true;
+        this.keepAfterNavigationChange = false;
         this.alertSubject.next({
             type: 'error',
             text: message

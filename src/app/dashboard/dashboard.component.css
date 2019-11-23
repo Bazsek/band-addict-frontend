@@ -49,17 +49,17 @@
 }
 
 .advertisement {
-    background-color:rgb(254, 255, 213);
+    border: 1px solid rgb(138, 202, 255);
 }
 
 .curiosity {
-    background-color: rgb(255, 230, 230);
+    border: 1px solid rgba(250, 129, 129, 0.89);
 }
 
 .event {
-    background-color: rgb(227, 253, 219);
+    border: 1px solid rgba(157, 255, 128, 0.89);
 }
 
 .other {
-    background-color: whitesmoke;
+    border: 1px solid rgba(102, 102, 102, 0.89);
 }

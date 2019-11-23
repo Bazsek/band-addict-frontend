@@ -3,13 +3,13 @@
     <div class="col-md-4">
       <div class="btn-group">
         <div class="btn btn-success" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
-          Previous
+          <i class="fa fa-chevron-left"></i>
         </div>
         <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate">
           Today
         </div>
         <div class="btn btn-success" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
-          Next
+          <i class="fa fa-chevron-right"></i>
         </div>
       </div>
     </div>
@@ -31,7 +31,7 @@
     </div>
   </div>
   <br />
-  <div [ngSwitch]="view">
+  <div [ngSwitch]="view" class="content">
     <mwl-calendar-month-view
       *ngSwitchCase="CalendarView.Month"
       [viewDate]="viewDate"
@@ -39,7 +39,7 @@
       [refresh]="refresh"
       [activeDayIsOpen]="activeDayIsOpen"
       (dayClicked)="dayClicked($event.day)"
-      (eventClicked)="handleEvent('Clicked', $event.event)"
+      (eventClicked)="eventClicked($event.event)"
       (eventTimesChanged)="eventTimesChanged($event)"
     >
     </mwl-calendar-month-view>
@@ -48,7 +48,7 @@
       [viewDate]="viewDate"
       [events]="events"
       [refresh]="refresh"
-      (eventClicked)="handleEvent('Clicked', $event.event)"
+      (eventClicked)="eventClicked($event.event)"
       (eventTimesChanged)="eventTimesChanged($event)"
     >
     </mwl-calendar-week-view>
@@ -57,32 +57,109 @@
       [viewDate]="viewDate"
       [events]="events"
       [refresh]="refresh"
-      (eventClicked)="handleEvent('Clicked', $event.event)"
+      (eventClicked)="eventClicked($event.event)"
       (eventTimesChanged)="eventTimesChanged($event)"
     >
     </mwl-calendar-day-view>
   </div>
 </div>
-<ng-template #modalContent let-close="close">
+<ng-template #openEvent let-close="close">
   <div class="modal-header">
-    <h5 class="modal-title">Event action occurred</h5>
-    <button type="button" class="close" (click)="close()">
+    <h5 class="modal-title">{{openedEvent.title}}</h5>
+    <button type="button" class="close" (click)="close(); this.activeDayIsOpen = false;">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
+    <div class="date-group">
+      <span class="half">Start:</span>
+      <span class="half">End</span>
+    </div>
+    <div class="date-group">
+      <pre class="half">{{ openedEvent?.start | date: 'yyyy.MM.dd. hh:mm:ss'}}</pre>
+      <pre class="half">{{ openedEvent?.end | date: 'yyyy.MM.dd. hh:mm:ss'}}</pre>
+    </div>
     <div>
-      Action:
-      <pre>{{ modalData?.action }}</pre>
+      Title:
+      <pre>{{ openedEvent?.title }}</pre>
     </div>
     <div>
       Event:
-      <pre>{{ modalData?.event | json }}</pre>
+      <pre>{{ openedEvent.description }}</pre>
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-secondary" (click)="close()">
-      OK
+    <button type="button" class="btn btn-success" (click)="changeToEdit(openedEvent); close(); this.isNew = false;">
+      Edit
+    </button>
+    <button type="button" class="btn btn-outline-secondary" (click)="close(); this.activeDayIsOpen = false;">
+        Cancel
     </button>
   </div>
+</ng-template>
+
+<ng-template #newEvent let-close="close">
+  <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+      <div class="modal-header">
+          <div class="form-group title">
+              <label for="title">Title</label>
+              <input type="text" formControlName="title" class="form-control" [ngClass]="{ 'is-invalid': submitted && eventData.title.errors }" />
+              <div *ngIf="submitted && eventData.title.errors" class="invalid-feedback">
+              <div *ngIf="eventData.title.errors.required">Title is required</div>
+                  <div *ngIf="eventData.title.errors">Invalid title</div>
+              </div>
+          </div>
+        <button type="button" class="close" (click)="close(); this.activeDayIsOpen = false;">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="date-group">
+          <div class="form-group half">
+              <label for="start">Start</label>
+              <input type="date" formControlName="start" class="form-control" [ngClass]="{ 'is-invalid': submitted && eventData.start.errors }" />
+              <div *ngIf="submitted && eventData.start.errors" class="invalid-feedback">
+              <div *ngIf="eventData.start.errors.required">Start date is required</div>
+                  <div *ngIf="eventData.start.errors">Invalid start date</div>
+              </div>
+          </div>
+          <div class="form-group half">
+              <label for="end">End</label>
+              <input type="date" formControlName="end" class="form-control" [ngClass]="{ 'is-invalid': submitted && eventData.end.errors }" />
+              <div *ngIf="submitted && eventData.end.errors" class="invalid-feedback">
+              <div *ngIf="eventData.end.errors.required">End date is required</div>
+                  <div *ngIf="eventData.end.errors">Invalid end date</div>
+              </div>
+          </div>
+        </div>
+          <div class="form-group">
+              <label for="description">Description</label>
+              <textarea type="text" formControlName="description" class="form-control" [ngClass]="{ 'is-invalid': submitted && eventData.description.errors }"></textarea>
+              <div *ngIf="submitted && eventData.description.errors" class="invalid-feedback">
+              <div *ngIf="eventData.description.errors.required">Description is required</div>
+                  <div *ngIf="eventData.description.errors">Invalid description</div>
+              </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-success" ngbAutofocus (click)="save(); close();">Save</button>
+          <button type="button" class="btn btn-outline-dark" (click)="close()">Cancel</button>
+      </div>
+    </form>
+  </ng-template>
+
+<ng-template #confirm let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Remove {{ removedEvent.title }}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss(); this.activeDayIsOpen = false;">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body text-center">
+        Are you sure to remove {{removedEvent.title}} from the band?
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-success" autofocus (click)="deleteEvent(removedEvent); modal.close();">Yes</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close(); this.activeDayIsOpen = false;">No</button>
+    </div>
 </ng-template>

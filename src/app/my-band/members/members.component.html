@@ -1,45 +1,66 @@
+<h2>{{selectedUser.band === null ? 'Members' : selectedUser.band.name}}</h2>
 <div class="members">
-    <div class="arrows">
-        <i (click)="left()" class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>
-        <div class="card-container card-columns">
-            <div *ngFor="let member of members">
-                <div class="card" (click)="showUser(member)">
-                    <img class="card-img-top img-fluid" src="{{ member.profilePicture }}" alt="Card image cap">
-                    <blockquote class="card-block card-blockquote p-3">
-                        <h4>{{ member.name }}</h4>
-                        <p>{{ member.role }}</p>
-                        <footer>
-                            <small class="text-muted">{{ member.description }}</small>
-                        </footer>
-                    </blockquote>
-                </div>
-            </div>
+    <div class="selected-user">
+        <div class="picture">
+            <img class="centerize" src="{{selectedUser.profilePicture === null ? '/assets/user-placeholder.png' : selectedUser.profilePicture }}">
         </div>
-        <i (click)="right()" class="fa fa-arrow-circle-o-right right" aria-hidden="true"></i>
+        <div class="details centerize">
+            <h4>{{selectedUser.name}} ( {{selectedUser.nickName}} )</h4>
+            <p>
+                <select class="form-control" (change)="changeRole($event.target.value)">
+                    <option [selected]="selectedUser.role === 'FRONTMAN'" value="FRONTMAN">Frontman</option>
+                    <option [selected]="selectedUser.role === 'VOCAL'" value="VOCAL">Vocal</option>
+                    <option [selected]="selectedUser.role === 'GUITARIST'" value="GUITARIST">Guitarist</option>
+                    <option [selected]="selectedUser.role === 'DRUMMER'" value="DRUMMER">Drumer</option>
+                    <option [selected]="selectedUser.role === 'BASS'" value="BASS">Bass</option>
+                    <option [selected]="selectedUser.role === 'KEYBOARD'" value="KEYBOARD">Keyboard / Piano</option>
+                    <option [selected]="selectedUser.role === 'DJ'" value="DJ">DJ</option>
+                    <option [selected]="selectedUser.role === 'MEMBER'" value="MEMBER">Member</option>
+                    <option [selected]="selectedUser.role === 'OTHER'" value="OTHER">Other</option>
+                    <option [selected]="false" value="Unknown">Unknown</option>
+                  </select>
+                </p>
+            <p>Email: {{selectedUser.email}}</p>
+            <p>Phone: {{selectedUser.phoneNumber}}</p>
+            <p>{{selectedUser.description}}</p>
+            <p class="badge badge-success instrument" *ngFor="let instrument of selectedUser.instruments" 
+            [attr.title]="instrument.description">{{ instrument.name | uppercase }}</p>
+        </div>
+    </div>
+    <div class="user-list">
+        <div class="list centerize">
+            <p *ngFor="let member of members" class="member" (click)="this.selectedUser=member" [class.active]="selectedUser === member">
+                <img src="{{member.profilePicture === null ? '/assets/user-placeholder.png' : member.profilePicture }}">
+                 <span>{{member.name}} ( {{member.nickName}} ) - {{member.role}}</span>
+                <i class="fa fa-times" (click)="showRemove(confirm, member)" style="float: right;"></i>
+            </p>
+            <p class="new-user" *ngIf="new">
+                <input type="text" class="form-control" [formControl]="newUserSearch" (input)="searchUser()"/>
+            </p>
+            <p *ngFor="let u of newUsers" class="member">
+                    <img src="{{u.profilePicture === null ? '/assets/user-placeholder.png' : u.profilePicture }}">
+                    <span>{{u.name}} ( {{u.nickName}} ) - {{u.role}}</span>
+                   <i class="fa fa-plus" (click)="addUser(u)" style="float: right;"></i>
+            </p>
+            <p class="add">
+                <i class="fa fa-plus" (click)="openSearch()"></i>
+            </p>
+        </div>
     </div>
 </div>
 
-<ng-template #user let-modal>
-    <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">{{ selectedUser.name }}</h4>
-        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body text-center">
-        <img class="profile" src="{{ selectedUser.profilePicture === null ? '/assets/user-placeholder.png' : selectedUser.profilePicture }}">
-        <div class="instruments" *ngIf="selectedUser.instruments">
-            <p *ngFor="let instrument of selectedUser.instruments" class="badge badge-success instrument">{{ instrument.name | uppercase }}</p>
+<ng-template #confirm let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Remove {{ removedMember.name }}</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
-        <p>{{ selectedUser.nickName }}</p>
-        <p>{{ selectedUser.description }}</p>
-        <p *ngIf="selectedUser.band">{{ selectedUser.role | titlecase }} of {{ selectedUser.band.name }}</p>
-    </div>
-    <div class="modal-footer">
-        <div class="contact">
-            <p>Email: {{ selectedUser.email }}</p>
-            <p>Phone: {{ selectedUser.phoneNumber }}</p>
+        <div class="modal-body text-center">
+            Are you sure to remove {{removedMember.name}} from the band?
         </div>
-        <button type="button" class="btn btn-outline-dark" autofocus (click)="modal.close()">Cancel</button>
-    </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" autofocus (click)="remove(removedMember); modal.close();">Yes</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.close()">No</button>
+        </div>
 </ng-template>

@@ -1,34 +1,120 @@
-.card-container {
-    width: 90%;
-    margin-left: 5%;
-    margin-right: 5%;
-    align-items: center;
-}
-
-.card-columns {
-    -webkit-column-count: 5;
-    -moz-column-count: 5;
-    column-count: 5;
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .members {
-    height: 100%;
-    padding-bottom: 100%;
+    max-height: 100%;
+    padding-bottom: 0;
     margin-bottom: 0;
-}
-
-.arrows {
-    display: inline-flex;
-    width: 90%;
-    font-size: 2em;
+    margin-top: 50px;
     margin-left: 5%;
     margin-right: 5%;
+    display: flex;
 }
 
-.right {
-    float: right;
+.picture img {
+    border-radius: 50%;
+    width: 300px;
+    height: auto;
 }
 
-.arrows i {
-    margin-top: 15%;
+.centerize {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%,0%);
+}
+
+.details {
+    margin-top: 5%;
+    width: 300px;
+}
+
+.selected-user, .user-list {
+    width: 50%;
+}
+
+.selected-user {
+    border-right: 1px solid rgba(112, 112, 112, 0.418);
+}
+
+.user-list {
+    margin-top: 15px;
+}
+
+.list {
+    width: 500px;
+}
+
+.list img {
+    width: 50px;
+    border-radius: 50%;
+}
+
+.list p {
+    cursor: pointer;
+}
+
+.list p span {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.member i {
+    margin-right: 15px;
+    position: relative;
+    transform: translate(0%, 100%);
+    color: rgba(112, 112, 112, 0.418);
+}
+
+.member i:hover {
+    color: rgba(71, 71, 71, 0.9);
+}
+
+.member:hover, .member:active {
+    background-color: rgba(177, 177, 177, 0.5);
+    border-bottom-left-radius: 20px;
+    border-top-left-radius: 20px;
+}
+
+.instrument {
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+h4 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.add {
+    margin-top: 40px;
+    height: 40px;
+}
+
+.add i {
+    position: relative;
+    left: 50%;
+    transform: translate(0%, -50%);
+    color: rgba(112, 112, 112, 0.418);
+    font-size: 2em;
+}
+
+.add i:hover {
+    color: rgba(112, 112, 112, 0.9);
+}
+
+.new-user input {
+    width: 300px;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.new-user button {
+    margin-left: 100px;
+}
+
+.new-user {
+    display: inline-flex;
+    width: 500px;
 }
