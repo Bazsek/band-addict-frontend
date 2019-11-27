@@ -21,3 +21,21 @@ tr td, tr th {
 form input {
     width: 80%;
 }
+
+td i {
+    color: rgba(85, 85, 85, 0.89);
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+td i:hover {
+    color: black;
+}
+
+.pagination {
+    float: right;
+}
+
+.pagination /deep/ .ngx-pagination .current {
+    background: #28a745;
+}

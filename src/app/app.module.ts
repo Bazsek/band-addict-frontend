@@ -35,10 +35,12 @@ import { AngularFireStorageModule } from 'angularfire2/storage';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { SearchService } from './core/services/search.service';
 import { CoreModule } from './core/core.module';
-import { SearchComponent } from './song/search/search.component';
 import { OpenSearchResultComponent } from './open-search-result/open-search-result.component';
 import { NgxLinkifyjsModule } from 'ngx-linkifyjs';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { AlbumsComponent } from './song/albums/albums.component';
+import { LyricsComponent } from './song/lyrics/lyrics.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
     declarations: [
@@ -55,8 +57,9 @@ import { ImageCropperModule } from 'ngx-image-cropper';
         SheetsComponent,
         MembersComponent,
         BandComponent,
-        SearchComponent,
-        OpenSearchResultComponent
+        OpenSearchResultComponent,
+        AlbumsComponent,
+        LyricsComponent
     ],
     imports: [
         BrowserModule,
@@ -74,7 +77,8 @@ import { ImageCropperModule } from 'ngx-image-cropper';
         AngularFireStorageModule,
         NgxSpinnerModule,
         NgxLinkifyjsModule.forRoot(),
-        ImageCropperModule
+        ImageCropperModule,
+        NgxPaginationModule
     ],
     providers: [
         AuthGuard,

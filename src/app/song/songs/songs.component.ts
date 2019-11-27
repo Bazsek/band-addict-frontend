@@ -12,6 +12,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class SongsComponent implements OnInit {
     songs: SongDTO[]
     link: string;
+    p: number = 1;
 
     constructor(
         private dashboardService: DashboardService,

@@ -1,0 +1,139 @@
+<ngx-spinner bdColor="rgba(70, 70, 70, 0.8)" size="medium" color="#fff" type="line-scale"></ngx-spinner>
+<h2>Albums of the band</h2>
+<div *ngIf="albums == null || albums.length == 0" class="albums">
+    <p class="add centerize">
+        <button class="btn btn-success" (click)="createAlbum(newAlbum)">Create album</button>
+    </p>
+</div>
+<div *ngIf="albums != null && albums.length > 0" class="albums">
+    <div class="album-list">
+        <div class="list centerize">
+          <p *ngFor="let album of albums" class="album" (click)="selectAlbum(album)" [class.active]="selectedAlbum === album">
+              <img src="{{album.coverPhoto === null ? '/assets/album-placeholder.png' : album.coverPhoto }}">
+              <span>{{album.name}} - {{album.createdAt | date: 'dd/MM/yyyy'}}</span>
+              <i class="fa fa-times" (click)="showRemoveAlbum(confirmAlbum, album)" style="float: right;"></i>
+              <span *ngIf="selectedAlbum == album && openAlbum == true && selectedAlbum.description != null && selectedAlbum.description != '' ">
+                  <p class="description">{{selectedAlbum.description}}</p>
+              </span>
+          </p>
+          <p class="add">
+              <i class="fa fa-plus" (click)="createAlbum(newAlbum)"></i>
+          </p>
+      </div>
+    </div>
+    <div class="song-list">
+        <div class="list centerize">
+          <div *ngIf="selectedAlbum != null">
+            <p *ngFor="let song of selectedAlbum.songs" class="song">
+                <img src="/assets/music-placeholder.png">
+                 <span>{{song.title}} ( {{song.type}} ) - {{song.publishingDate | date: 'dd/MM/yyyy'}}</span>
+                <i class="fa fa-times" (click)="showRemoveSong(confirmSong, song)" style="float: right;"></i>
+            </p>
+          </div>
+            <p class="new-song" *ngIf="new">
+                <input type="text" class="form-control" [formControl]="newSongSearch" (input)="searchSong()"/>
+            </p>
+            <p *ngIf="newSongs.length == 0 && new" style="text-align: center;">No song found</p>
+            <p *ngFor="let s of newSongs" class="song">
+                <img src="/assets/music-placeholder.png">
+                <span>{{s.title}} ( {{s.type}} ) - {{s.publishingDate | date: 'dd/MM/yyyy'}}</span>
+                <i class="fa fa-plus" (click)="add(s)" style="float: right;"></i>
+            </p>
+            <p class="add">
+                <i class="fa fa-plus" (click)="openSearch()"></i>
+            </p>
+        </div>
+    </div>
+</div>
+
+<ng-template #confirmSong let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Remove {{ removedSong.title }}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body text-center">
+        Are you sure to remove {{removedSong.title}} from the album?
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-success" autofocus (click)="removeSong(removedSong); modal.close();">Yes</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close()">No</button>
+    </div>
+</ng-template>
+
+<ng-template #confirmAlbum let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Remove {{ removedAlbum.name }}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body text-center">
+        Are you sure to remove {{removedAlbum.name}}?
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-success" autofocus (click)="removeAlbum(removedAlbum); modal.close();">Yes</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close()">No</button>
+    </div>
+</ng-template>
+
+<ng-template #newAlbum let-close="close">
+  <form [formGroup]="albumForm">
+      <div class="modal-header">
+          <div class="form-group title">
+              <label for="name">Album name</label>
+              <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && albumData.name.errors }" />
+              <div *ngIf="submitted && albumData.name.errors" class="invalid-feedback">
+              <div *ngIf="albumData.name.errors.required">Name is required</div>
+                  <div *ngIf="albumData.name.errors">Invalid name</div>
+              </div>
+          </div>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+        <div class="modal-body">
+          <div class="data">
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea type="text" formControlName="description" class="form-control" [ngClass]="{ 'is-invalid': submitted && albumData.description.errors }"></textarea>
+                <div *ngIf="submitted && albumData.description.errors" class="invalid-feedback">
+                <div *ngIf="albumData.description.errors.required">Description is required</div>
+                    <div *ngIf="albumData.description.errors">Invalid description</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="createdAt">Publishing date</label>
+                <input type="date" formControlName="createdAt" class="form-control" [ngClass]="{ 'is-invalid': submitted && albumData.createdAt.errors }" />
+                <div *ngIf="submitted && albumData.createdAt.errors" class="invalid-feedback">
+                <div *ngIf="albumData.createdAt.errors.required">Date is required!</div>
+                    <div *ngIf="albumData.createdAt.errors">Invalid date!</div>
+                </div>
+            </div>
+            <div class="button-container">
+                <button class="btn btn-success" (click)="upload.click()">Cover photo</button>
+                <input hidden type="file" #upload (change)="fileChangeEvent($event); this.isCropper = !this.isCropper;" accept="application/jpg">
+            </div>
+          </div>
+            <div class="cover-photo">
+                <img *ngIf="!isCropper" src="/assets/album-placeholder.png">
+                <image-cropper
+                      *ngIf="isCropper"
+                      class="cropper"
+                      [imageChangedEvent]="imageChangedEvent"
+                      [maintainAspectRatio]="true"
+                      [aspectRatio]="1 / 1"
+                      [resizeToWidth]="300"
+                      format="png"
+                      (imageCropped)="imageCropped($event)"
+                      (loadImageFailed)="loadImageFailed()"
+                  ></image-cropper>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" ngbAutofocus (click)="submitAlbum(); close();">Submit</button>
+            <button type="button" class="btn btn-outline-dark" (click)="close(); postImg = null;">Cancel</button>
+        </div>
+    </form>
+</ng-template>

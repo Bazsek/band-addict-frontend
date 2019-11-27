@@ -3,7 +3,7 @@ h2 {
     margin-bottom: 20px;
 }
 
-.members {
+.albums {
     max-height: 100%;
     padding-bottom: 0;
     margin-bottom: 0;
@@ -30,24 +30,29 @@ h2 {
     width: 300px;
 }
 
-.selected-user, .user-list {
+.selected-album, .song-list, .album-list {
     width: 50%;
 }
 
-.selected-user {
+.album-list {
     border-right: 1px solid rgba(112, 112, 112, 0.418);
 }
 
-.user-list {
-    margin-top: 15px;
+.song-list, .album-list {
+    margin-top: 30px;
 }
 
 .list {
     width: 500px;
 }
 
-.list img {
+.song-list .list img {
     width: 50px;
+    border-radius: 50%;
+}
+
+.album-list .list img {
+    width: 80px;
     border-radius: 50%;
 }
 
@@ -60,26 +65,34 @@ h2 {
     margin-right: 20px;
 }
 
-.member i {
+.song i {
     margin-right: 15px;
     position: relative;
     transform: translate(0%, 100%);
     color: rgba(112, 112, 112, 0.418);
 }
 
-.member i:hover {
+.album i {
+    margin-right: 15px;
+    position: relative;
+    top: 32px;
+    color: rgba(112, 112, 112, 0.418);
+}
+
+.song i:hover, .album i:hover {
     color: rgba(71, 71, 71, 0.9);
 }
 
-.member:hover, .member:active {
+.song:hover, .song:active {
     background-color: rgba(201, 201, 201, 0.5);
-    border-bottom-left-radius: 20px;
-    border-top-left-radius: 20px;
+    border-bottom-left-radius: 25px;
+    border-top-left-radius: 25px;
 }
 
-.instrument {
-    margin-right: 5px;
-    cursor: pointer;
+.album:hover, .album:active {
+    background-color: rgba(201, 201, 201, 0.5);
+    border-bottom-left-radius: 40px;
+    border-top-left-radius: 40px;
 }
 
 h4 {
@@ -104,17 +117,49 @@ h4 {
     color: rgba(112, 112, 112, 0.9);
 }
 
-.new-user input {
+.new-song input {
     width: 300px;
     margin-left: 100px;
     margin-right: 100px;
 }
 
-.new-user button {
+.new-song button {
     margin-left: 100px;
 }
 
-.new-user {
+.new-song {
     display: inline-flex;
     width: 500px;
+}
+
+.title {
+    width: 60%;
+}
+
+.data {
+    width: 45%;
+    margin-right: 5%;
+}
+
+.cover-photo {
+    width: 45%;
+    margin-left: 5%;    
+}
+
+.cover-photo img {
+    width: 300px;
+    height: 300px;
+}
+
+.modal-body {
+    display: flex;
+}
+
+.button-container button {
+    float: right;
+}
+
+.description {
+    margin-left: 100px;
+    margin-right: 50px;
 }

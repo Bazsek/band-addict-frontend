@@ -11,11 +11,12 @@ import { AboutComponent } from './about/about.component';
 import { SongComponent } from './song/song.component';
 import { SongsComponent } from './song/songs/songs.component';
 import { SheetsComponent } from './song/sheets/sheets.component';
-import { SearchComponent } from './song/search/search.component';
 import { MembersComponent } from './my-band/members/members.component';
 import { EventsComponent } from './my-band/events/events.component';
 import { BandComponent } from './my-band/band/band.component';
 import { OpenSearchResultComponent } from './open-search-result/open-search-result.component';
+import { AlbumsComponent } from './song/albums/albums.component';
+import { LyricsComponent } from './song/lyrics/lyrics.component';
 
 const routes: Routes = [
     { path: '', component: MainComponent, resolve: { isLoggedIn: UserResolver }, canActivate: [AuthGuard], children: [
@@ -29,7 +30,8 @@ const routes: Routes = [
         { path: 'song', component: SongComponent, children: [
             { path: 'songs', component: SongsComponent },
             { path: 'sheets', component: SheetsComponent },
-            { path: 'search', component: SearchComponent }
+            { path: 'albums', component: AlbumsComponent },
+            { path: 'lyrics', component: LyricsComponent }
         ] },
         { path: 'about', component: AboutComponent },
         { path: 'search-result', component: OpenSearchResultComponent }

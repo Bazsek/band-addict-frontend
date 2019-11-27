@@ -11,6 +11,7 @@ import { AlertService } from 'src/app/core/services';
 export class SheetsComponent implements OnInit {
   latestSheets: Sheet[];
   searchResult: Sheet[];
+  p: number = 1;
 
   constructor(
     private songService: SongService,

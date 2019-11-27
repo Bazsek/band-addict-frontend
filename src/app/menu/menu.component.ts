@@ -24,6 +24,7 @@ import { Event } from '../core/model/event';
     styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit, OnDestroy {
+    actionsVisible: boolean = false;
     currentUser: User;
     currentBand: false;
     postForm: FormGroup;

@@ -1,13 +1,8 @@
-<div class="search-container">
-  <form (ngSubmit)="search(text.value)">
-    <input #text type="text" placeholder="Search.." name="search">
-    <button type="submit"><i class="fa fa-search"></i></button>
-  </form>
-</div>
 <div class="sheets table-responsive">
     <table class="table">
       <thead>
         <tr>
+          <th scope="col">#</th>
           <th scope="col">Title</th>
           <th scope="col">Description</th>
           <th scope="col">Instrument</th>
@@ -17,17 +12,26 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let sheet of latestSheets">
+        <tr *ngFor="let sheet of latestSheets | paginate: { itemsPerPage: 20, currentPage: p }; index as i">
+            <td scope="col">{{i + 1}}</td>
             <td scope="col">{{ sheet.title }}</td>
             <td scope="col">{{ sheet.name }}</td>
             <td scope="col">{{ sheet.instrument }}</td>
             <td scope="col"><a target="_blank" [attr.href]="sheet.sheet">Open</a></td>
             <td scope="col">{{ sheet.createdAt | date: 'dd/MM/yyyy hh:mm:ss' }}</td>
             <td scope="col">
-              <i class="fa fa-edit" (click)="edit(song)"></i> | 
-              <i class="fa fa-ban" (click)="delete(song)"></i>
+              <i class="fa fa-pencil" (click)="edit(song)"></i>
+              <i class="fa fa-times" (click)="delete(song)"></i>
             </td>
         </tr>
       </tbody>
     </table>
+    <pagination-controls class="pagination" 
+      (pageChange)="p = $event"
+      maxSize="9"
+      directionLinks="true"
+      autoHide="true"
+      previousLabel=""
+      nextLabel="">
+  </pagination-controls>
 </div>

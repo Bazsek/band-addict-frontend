@@ -13,7 +13,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let song of songs; index as i">
+        <tr *ngFor="let song of songs | paginate: { itemsPerPage: 10, currentPage: p }; index as i">
             <th scope="col">{{i + 1}}</th>
             <td scope="col" class="video">
               <iframe width="280" height="144" [src]='safeUrl(song.youtube)' frameborder="0" allowfullscreen></iframe>
@@ -24,11 +24,19 @@
             <td scope="col">{{ song.description }}</td>
             <td scope="col">{{ song.type }}</td>
             <td scope="col">
-              <i class="fa fa-edit" (click)="edit(song)"></i> | 
-              <i class="fa fa-ban" (click)="delete(song)"></i> | 
-              <i class="fa fa-folder-open" (click)="open(song)"></i>
+              <i class="fa fa-pencil" (click)="edit(song)"></i> 
+              <i class="fa fa-times" (click)="delete(song)"></i> 
+              <i class="fa fa-th-large" (click)="album(song)"></i>
             </td>
           </tr>
       </tbody>
     </table>
+    <pagination-controls class="pagination" 
+        (pageChange)="p = $event"
+        maxSize="9"
+        directionLinks="true"
+        autoHide="true"
+        previousLabel=""
+        nextLabel="">
+    </pagination-controls>
 </div>
