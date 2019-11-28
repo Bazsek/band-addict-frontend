@@ -1,5 +1,3 @@
-import { User } from 'firebase';
-
 export interface Event {
     id?: number;
     title: string;

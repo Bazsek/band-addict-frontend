@@ -8,11 +8,11 @@
 <div *ngIf="albums != null && albums.length > 0" class="albums">
     <div class="album-list">
         <div class="list centerize">
-          <p *ngFor="let album of albums" class="album" (click)="selectAlbum(album)" [class.active]="selectedAlbum === album">
+          <p *ngFor="let album of albums" class="album" (click)="selectAlbum(album)" [ngClass]="{'album-active': selectedAlbum == album}">
               <img src="{{album.coverPhoto === null ? '/assets/album-placeholder.png' : album.coverPhoto }}">
               <span>{{album.name}} - {{album.createdAt | date: 'dd/MM/yyyy'}}</span>
-              <i class="fa fa-times" (click)="showRemoveAlbum(confirmAlbum, album)" style="float: right;"></i>
-              <span *ngIf="selectedAlbum == album && openAlbum == true && selectedAlbum.description != null && selectedAlbum.description != '' ">
+              <i class="fa fa-times fa-lg" (click)="showRemoveAlbum(confirmAlbum, album)" style="float: right;"></i>
+              <span *ngIf="selectedAlbum == album && this.openAlbum == true && selectedAlbum.description != null && selectedAlbum.description != '' ">
                   <p class="description">{{selectedAlbum.description}}</p>
               </span>
           </p>
@@ -70,7 +70,7 @@
         </button>
     </div>
     <div class="modal-body text-center">
-        Are you sure to remove {{removedAlbum.name}}?
+        Are you sure to remove {{removedAlbum.name}} album?
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-success" autofocus (click)="removeAlbum(removedAlbum); modal.close();">Yes</button>

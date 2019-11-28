@@ -83,13 +83,13 @@ h2 {
     color: rgba(71, 71, 71, 0.9);
 }
 
-.song:hover, .song:active {
+.song:hover, .song-active {
     background-color: rgba(201, 201, 201, 0.5);
     border-bottom-left-radius: 25px;
     border-top-left-radius: 25px;
 }
 
-.album:hover, .album:active {
+.album:hover, .album-active {
     background-color: rgba(201, 201, 201, 0.5);
     border-bottom-left-radius: 40px;
     border-top-left-radius: 40px;

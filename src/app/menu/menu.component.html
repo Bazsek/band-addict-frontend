@@ -21,11 +21,11 @@
         <li *ngIf="!actionsVisible" class="right" title="Show actions"><span (click)="this.actionsVisible = true"><i class="fa fa-caret-left"></i></span></li>
         <span *ngIf="actionsVisible" class="actions">
             <li class="right" title="Hide actions"><span (click)="this.actionsVisible = false"><i class="fa fa-caret-right"></i></span></li>
-            <li class="right" title="Write new lyrics"><span (click)="showLyrics(sheet)"><i class="fa fa-comment-o"></i></span></li>
+            <li class="right" title="Write new lyrics"><span (click)="showLyrics(sheet)"><i class="fa fa-text-width"></i></span></li>
             <li class="right" title="Create new event"><span (click)="showEvent(event)"><i class="fa fa-calendar"></i></span></li>
             <li class="right" title="Add new music"><span (click)="showSong(song)"><i class="fa fa-music"></i></span></li>
-            <li class="right" title="Create new post"><span (click)="showAdvertisement(advertisement)"><i class="fa fa-text-width"></i></span></li>
             <li class="right" title="Upload new sheet"><span (click)="showSheet(sheet)"><i class="fa fa-file-pdf-o"></i></span></li>
+            <li class="right" title="Create new post"><span (click)="showAdvertisement(advertisement)"><i class="fa fa-comment-o"></i></span></li>
         </span>
     </ul>
 </div>

@@ -1,3 +1,57 @@
-<p>
-  lyrics works!
-</p>
+<ngx-spinner bdColor="rgba(70, 70, 70, 0.8)" size="medium" color="#fff" type="line-scale"></ngx-spinner>
+<h2>Lyrics</h2>
+<div class="lyrics">
+    <div *ngIf="switch" class="list">
+        <label class="switch">
+            <input type="checkbox" [(ngModel)]="switch">
+            <span class="slider round"></span>
+        </label>
+          <p *ngFor="let l of lyrics" class="song" (click)="this.selectedLyrics = l" [ngClass]="{'active': this.selectedLyrics == l}">
+              <img src="/assets/lyrics-placeholder.png">
+                <span>{{l.title}}</span> <span>{{l.createdAt | date: 'dd/MM/yyyy'}}</span>
+              <i class="fa fa-times fa-lg" (click)="remove(confirm, l)" style="float: right;"></i>
+          </p>
+          <p class="add">
+            <i class="fa fa-plus fa-2x" (click)="this.new = !this.new"></i>
+          </p>
+          <p *ngIf="new" class="empty-lyrics">
+                <img src="/assets/lyrics-placeholder.png">
+                <input type="text" class="form-control" placeholder="Search" [formControl]="newLyricsTitle">
+                <input type="date" class="form-control" [formControl]="newLyricsDate">
+                <i class="fa fa-plus fa-2x" (click)="save()" style="float: right;"></i>
+          </p>
+    </div>
+    <div *ngIf="!switch" class="list">
+        <label class="switch">
+            <input type="checkbox" [(ngModel)]="switch">
+            <span class="slider round"></span>
+        </label>
+          <p class="browse centerize">
+              <input type="text" class="form-control" [formControl]="searchLyrics" (input)="search()"/>
+          </p>
+          <p *ngIf="browse.length == 0" style="text-align: center;">No lyrics found</p>
+          <p *ngFor="let result of browse" class="song" (click)="this.selectedLyrics = l" [ngClass]="{'active': this.selectedLyrics == result}">
+              <img src="/assets/lyrics-placeholder.png">
+                <span>{{result.title}}</span> <span>{{result.createdAt | date: 'dd/MM/yyyy'}}</span>
+          </p>
+    </div>
+    <div class="opened-lyrics">
+        <textarea type="text" [formControl]="text" [ngModel]="this.selectedLyrics?.text" class="form-control" ></textarea>
+    </div>
+</div>
+
+<ng-template #confirm let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Remove {{ removedLyric.title }}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body text-center">
+        Are you sure to remove {{ removedLyric.title }} from the album?
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-success" autofocus (click)="remove(removedLyric); modal.close();">Yes</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close()">No</button>
+    </div>
+</ng-template>

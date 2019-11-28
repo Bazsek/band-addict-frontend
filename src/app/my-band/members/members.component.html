@@ -29,7 +29,7 @@
     </div>
     <div class="user-list">
         <div class="list centerize">
-            <p *ngFor="let member of members" class="member" (click)="this.selectedUser=member" [class.active]="selectedUser === member">
+            <p *ngFor="let member of members" class="member" (click)="this.selectedUser=member" [ngClass]="{'active':selectedUser == member}">
                 <img src="{{member.profilePicture === null ? '/assets/user-placeholder.png' : member.profilePicture }}">
                  <span>{{member.name}} ( {{member.nickName}} ) - {{member.role}}</span>
                 <i class="fa fa-times" (click)="showRemove(confirm, member)" style="float: right;"></i>

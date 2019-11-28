@@ -57,8 +57,12 @@ export class AlbumsComponent implements OnInit {
   }
 
   selectAlbum(album: Album) {
-    this.selectedAlbum = album;
-    this.openAlbum = !this.openAlbum;
+    if (this.selectedAlbum = album) {
+      this.openAlbum = !this.openAlbum;
+    } else {
+      this.openAlbum = false;
+      this.selectedAlbum = album;
+    }
   }
 
   createAlbum(newAlbum) {
