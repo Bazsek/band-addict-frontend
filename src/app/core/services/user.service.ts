@@ -26,8 +26,8 @@ export class UserService {
         return this.http.post(`${environment.apiUrl}/sign-up`, user)
     }
 
-    activate(user: User) {
-        return this.http.patch(`${environment.apiUrl}/activate`, user)
+    activate() {
+        return this.http.patch<User>(`${environment.apiUrl}/activate`, null)
     }
 
     getUserById(id: number) {

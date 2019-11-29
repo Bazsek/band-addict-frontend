@@ -17,8 +17,10 @@ import { BandComponent } from './my-band/band/band.component';
 import { OpenSearchResultComponent } from './open-search-result/open-search-result.component';
 import { AlbumsComponent } from './song/albums/albums.component';
 import { LyricsComponent } from './song/lyrics/lyrics.component';
+import { ActivateComponent } from './activate/activate.component';
 
 const routes: Routes = [
+    { path: 'activate/:token', component: ActivateComponent },
     { path: '', component: MainComponent, resolve: { isLoggedIn: UserResolver }, canActivate: [AuthGuard], children: [
         { path: 'dashboard', component: DashboardComponent },
         { path: 'my-data', component: MyDataComponent },

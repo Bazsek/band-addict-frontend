@@ -41,6 +41,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { AlbumsComponent } from './song/albums/albums.component';
 import { LyricsComponent } from './song/lyrics/lyrics.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { ActivateComponent } from './activate/activate.component';
 
 @NgModule({
     declarations: [
@@ -59,7 +60,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
         BandComponent,
         OpenSearchResultComponent,
         AlbumsComponent,
-        LyricsComponent
+        LyricsComponent,
+        ActivateComponent
     ],
     imports: [
         BrowserModule,
