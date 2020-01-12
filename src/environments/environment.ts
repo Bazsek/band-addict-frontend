@@ -6,14 +6,14 @@ export const environment = {
   production: false,
   apiUrl: 'http://localhost:8080',
   firebase: {
-    apiKey: "AIzaSyBfrwhRkhvF-fx8C_f4muOXCEy8BHoFots",
-        authDomain: "bandaddict-1d540.firebaseapp.com",
-        databaseURL: "https://bandaddict-1d540.firebaseio.com",
-        projectId: "bandaddict-1d540",
-        storageBucket: "bandaddict-1d540.appspot.com",
-        messagingSenderId: "783306742301",
-        appId: "1:783306742301:web:00346c2d7ac8cdfec9c4f4",
-        measurementId: "G-5JT6GRK5CX"
+    apiKey: "***********************",
+        authDomain: "******************",
+        databaseURL: "****************",
+        projectId: "**************",
+        storageBucket: "***************",
+        messagingSenderId: "*************",
+        appId: "******************",
+        measurementId: "************"
   }
 };
 
