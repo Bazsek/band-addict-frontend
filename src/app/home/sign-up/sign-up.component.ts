@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { UserService, AlertService } from 'src/app/core/services';
 import { PasswordConfirm } from 'src/app/core/validator/passwordConfirm';
 import { Subscription, interval } from 'rxjs';
+import { NeutrinoApiService } from 'src/app/core/services/neutrino-api.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -36,7 +37,8 @@ export class SignUpComponent implements OnInit, OnDestroy {
       private formBuilder: FormBuilder,
       private router: Router,
       private userService: UserService,
-      private alertService: AlertService) { }
+      private alertService: AlertService,
+      private neutrinoApi: NeutrinoApiService) { }
 
   ngOnInit() {
       this.selectedQuote = this.quotes[Math.floor(Math.random() * 10) + 1];
@@ -58,16 +60,33 @@ export class SignUpComponent implements OnInit, OnDestroy {
       if (this.registerForm.invalid) {
           return;
       }
-      this.userService.signUp(this.registerForm.value)
-          .subscribe(
-              data => {
-                  this.alertService.success('Registration successful', true);
-                  this.router.navigate(['/sign-in']);
-              },
-              error => {
-                  this.alertService.error('Something went wrong. Try again later!');
-              }
-          );
+
+      this.neutrinoApi.profanityDetection(this.registerForm.value.name + this.registerForm.value.email)
+        .subscribe(
+            response => {
+                let check = JSON.parse(response.toString());
+                
+                if(check.isbad) {
+                    this.alertService.error("fail");
+                } else {
+                    this.alertService.success("succes");
+                }
+
+                this.userService.signUp(this.registerForm.value)
+                    .subscribe(
+                        data => {
+                            this.alertService.success('Registration successful', true);
+                            this.router.navigate(['/sign-in']);
+                        },
+                        error => {
+                            this.alertService.error('Something went wrong. Try again later!');
+                        }
+                    );
+            },
+            error => {
+                this.alertService.error('Something went wrong during profanity check. Try again later!');
+            }
+        );
   }
 
   ngOnDestroy(){

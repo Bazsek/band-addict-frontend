@@ -72,9 +72,9 @@ export class EventsComponent implements OnInit {
     }
   ];
 
-  @ViewChild('newEvent', {static: false}) newEvent: TemplateRef<any>;
-  @ViewChild('openEvent', {static: false}) openEvent: TemplateRef<any>;
-  @ViewChild('confirm', {static: false}) confirm: TemplateRef<any>;
+  @ViewChild('newEvent') newEvent: TemplateRef<any>;
+  @ViewChild('openEvent') openEvent: TemplateRef<any>;
+  @ViewChild('confirm') confirm: TemplateRef<any>;
 
   constructor(private modal: NgbModal,
               private bandService: MyBandService,

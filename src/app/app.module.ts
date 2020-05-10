@@ -20,7 +20,6 @@ import { MyDataComponent } from './my-data/my-data.component';
 import { MyBandComponent } from './my-band/my-band.component';
 import { AboutComponent } from './about/about.component';
 import { SongComponent } from './song/song.component';
-import { FileSelectDirective } from '../../node_modules/ng2-file-upload/ng2-file-upload';
 import { SongsComponent } from './song/songs/songs.component';
 import { SheetsComponent } from './song/sheets/sheets.component';
 import { MembersComponent } from './my-band/members/members.component';
@@ -53,7 +52,6 @@ import { ActivateComponent } from './activate/activate.component';
         MyBandComponent,
         AboutComponent,
         SongComponent,
-        FileSelectDirective,
         SongsComponent,
         SheetsComponent,
         MembersComponent,

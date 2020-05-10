@@ -6,14 +6,19 @@ export const environment = {
   production: false,
   apiUrl: 'http://localhost:8080',
   firebase: {
-    apiKey: "***********************",
-        authDomain: "******************",
-        databaseURL: "****************",
-        projectId: "**************",
-        storageBucket: "***************",
-        messagingSenderId: "*************",
-        appId: "******************",
-        measurementId: "************"
+    apiKey: "",
+        authDomain: "",
+        databaseURL: "",
+        projectId: "",
+        storageBucket: "",
+        messagingSenderId: "783306742301",
+        appId: "",
+        measurementId: ""
+  },
+  neutrinoApi: {
+    userId: "",
+    masterKey: "",
+    endPoint: "https://neutrinoapi.net/bad-word-filter"
   }
 };
 
